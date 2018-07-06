@@ -106,6 +106,10 @@ class WiFiManagerParameter {
     int         getLabelPlacement();
     const char *getCustomHTML();
     void        setValue(const char *defaultValue, int length);
+	
+  protected:
+    void init(const char *id, const char *placeholder, const char *defaultValue, int length, const char *custom, int labelPlacement);
+	
   private:
     const char *_id;
     const char *_placeholder;
@@ -114,8 +118,6 @@ class WiFiManagerParameter {
     int         _labelPlacement;
     const char *_customHTML;
 
-    void init(const char *id, const char *placeholder, const char *defaultValue, int length, const char *custom);
-    void init(const char *id, const char *placeholder, const char *defaultValue, int length, const char *custom, int labelPlacement);
 
     friend class WiFiManager;
 };
