@@ -55,6 +55,9 @@ class WiFiManagerParameter {
     const char *getPlaceholder();
     int         getValueLength();
     const char *getCustomHTML();
+  protected:
+    void init(const char *id, const char *placeholder, const char *defaultValue, int length, const char *custom);
+    
   private:
     const char *_id;
     const char *_placeholder;
@@ -62,7 +65,6 @@ class WiFiManagerParameter {
     int         _length;
     const char *_customHTML;
 
-    void init(const char *id, const char *placeholder, const char *defaultValue, int length, const char *custom);
 
     friend class WiFiManager;
 };
