@@ -59,16 +59,22 @@ WiFiManagerParameter::~WiFiManagerParameter() {
   if (_value != NULL) {
     delete[] _value;
   }
+  _length=0; // setting length 0, ideally the entire parameter should be removed, or added to wifimanager scope so it follows
 }
 
 void WiFiManagerParameter::setValue(const char *defaultValue, int length) {
   _length         = length;
+  length          = strlen(defaultValue); // length actual
+  if(_length < length){
+    // Serial.println("defaultValue length mismatch");
+  }
   _value          = new char[length + 1];
   for (int i = 0; i < length + 1; i++) {
     _value[i] = 0;
   }
   if (defaultValue != NULL) {
-    strncpy(_value, defaultValue, length + 1); // length+1 due to null terminated string
+    strncpy(_value, defaultValue, length);
+    _value[length] = '\0'; // explicit null
   }
 }
 const char* WiFiManagerParameter::getValue() {
@@ -654,6 +660,8 @@ uint8_t WiFiManager::connectWifi(String ssid, String pass) {
 
   DEBUG_WM(DEBUG_VERBOSE,F("Connection result:"),getWLStatusString(connRes));
 
+// WPS enabled? https://github.com/esp8266/Arduino/pull/4889
+#ifdef NO_EXTRA_4K_HEAP
   // do WPS, if WPS options enabled and not connected and no password was supplied
   // @todo this seems like wrong place for this, is it a fallback or option?
   if (_tryWPS && connRes != WL_CONNECTED && pass == "") {
@@ -661,6 +669,7 @@ uint8_t WiFiManager::connectWifi(String ssid, String pass) {
     // should be connected at the end of WPS
     connRes = waitForConnectResult();
   }
+#endif
 
   if(connRes != WL_SCAN_COMPLETED){
     updateConxResult(connRes);
@@ -782,6 +791,8 @@ uint8_t WiFiManager::waitForConnectResult(uint16_t timeout) {
   return status;
 }
 
+// WPS enabled? https://github.com/esp8266/Arduino/pull/4889
+#ifdef NO_EXTRA_4K_HEAP
 void WiFiManager::startWPS() {
   DEBUG_WM(F("START WPS"));
   #ifdef ESP8266  
@@ -791,11 +802,11 @@ void WiFiManager::startWPS() {
   #endif
   DEBUG_WM(F("END WPS"));
 }
-
+#endif
 
 String WiFiManager::getHTTPHead(String title){
   String page;
-  page += FPSTR(HTTP_HEAD);
+  page += FPSTR(HTTP_HEAD_START);
   page.replace(FPSTR(T_v), title);
   page += FPSTR(HTTP_SCRIPT);
   page += FPSTR(HTTP_STYLE);
@@ -1073,7 +1084,7 @@ String WiFiManager::getParamOut(){
 
     String HTTP_PARAM_temp = FPSTR(HTTP_FORM_LABEL);
     HTTP_PARAM_temp += FPSTR(HTTP_FORM_PARAM);
-    bool tok_I = HTTP_PARAM_temp.indexOf(FPSTR(T_i)) > 0;
+    bool tok_I = HTTP_PARAM_temp.indexOf(FPSTR(T_I)) > 0;
     bool tok_i = HTTP_PARAM_temp.indexOf(FPSTR(T_i)) > 0;
     bool tok_n = HTTP_PARAM_temp.indexOf(FPSTR(T_n)) > 0;
     bool tok_p = HTTP_PARAM_temp.indexOf(FPSTR(T_p)) > 0;
@@ -1085,7 +1096,8 @@ String WiFiManager::getParamOut(){
     char parLength[5];
     // add the extra parameters to the form
     for (int i = 0; i < _paramsCount; i++) {
-      if (_params[i] == NULL) {
+      if (_params[i] == NULL || _params[i]->_length == 0) {
+        DEBUG_WM(DEBUG_ERROR,"[ERROR] WiFiManagerParameter is out of scope");
         break;
       }
 
@@ -1108,7 +1120,7 @@ String WiFiManager::getParamOut(){
 
       // if no ID use customhtml for item, else generate from param string
       if (_params[i]->getID() != NULL) {
-        if(tok_I)pitem.replace(FPSTR(T_i), (String)FPSTR(S_parampre)+(String)i);
+        if(tok_I)pitem.replace(FPSTR(T_I), (String)FPSTR(S_parampre)+(String)i);
         if(tok_i)pitem.replace(FPSTR(T_i), _params[i]->getID());
         if(tok_n)pitem.replace(FPSTR(T_n), _params[i]->getID());
         if(tok_p)pitem.replace(FPSTR(T_p), FPSTR(T_t));
@@ -1181,7 +1193,7 @@ void WiFiManager::handleWifiSave() {
   page += FPSTR(HTTP_END);
 
   server->sendHeader(FPSTR(HTTP_HEAD_CL), String(page.length()));
-  server->sendHeader(HTTP_HEAD_CORS, HTTP_HEAD_CORS_ALLOW_ALL);
+  server->sendHeader(FPSTR(HTTP_HEAD_CORS), FPSTR(HTTP_HEAD_CORS_ALLOW_ALL));
   server->send(200, FPSTR(HTTP_HEAD_CT), page);
 
   DEBUG_WM(DEBUG_DEV,F("Sent wifi save page"));
