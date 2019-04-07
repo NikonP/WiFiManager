@@ -32,7 +32,7 @@ const char HTTP_FORM_START[] PROGMEM      = "<form method='get' action='wifisave
 const char HTTP_FORM_PARAM[] PROGMEM      = "<br/><input id='{i}' name='{n}' maxlength={l} placeholder='{p}' value='{v}' {c}>";
 const char HTTP_FORM_END[] PROGMEM        = "<br/><button type='submit'>Сохранить</button></form>";
 const char HTTP_SCAN_LINK[] PROGMEM       = "<br/><div class='c'><a href='/wifi'>Scan</a></div>";
-const char HTTP_SAVED[] PROGMEM           = "<div><h3>Подключение к Wi-Fi</h3><br/><div id='st'></div><br/><p id='pr'></p><br/>Если не удастся, откройте предыдущую страницу и введите корректные.</div>";
+const char HTTP_SAVED[] PROGMEM           = "<div><h3>Подключение к Wi-Fi</h3><br/>Должен погаснуть светодиод при успешном подключении.<div id='st'></div><br/><p id='pr'></p><br/>Если не удастся подключиться, откройте предыдущую страницу и введите корректные данные.</div>";
 const char HTTP_END[] PROGMEM             = "</div></body></html>";
 const char HTTP_SAVED_END[] PROGMEM       = "</div></body><script>\
 let timerId = setInterval(function run() {\
@@ -59,8 +59,8 @@ xhr.ontimeout = function (e) {\
   document.getElementById('pr').innerHTML = '';\
 };\
 xhr.send(null);\
-timerId = setTimeout(run, 1000);\
-}, 1000);\
+timerId = setTimeout(run, 5000);\
+}, 5000);\
 </script></html>";
 
 #ifndef WIFI_MANAGER_MAX_PARAMS
