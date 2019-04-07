@@ -149,6 +149,8 @@ void WiFiManager::setupConfigPortal() {
   server->on(String(F("/wifisave")).c_str(), std::bind(&WiFiManager::handleWifiSave, this));
   server->on(String(F("/i")).c_str(), std::bind(&WiFiManager::handleInfo, this));
   server->on(String(F("/r")).c_str(), std::bind(&WiFiManager::handleReset, this));
+  server->on(String(F("/status")).c_str(), std::bind(&WiFiManager::handleStatus, this));
+  server->on(String(F("/states")).c_str(), std::bind(&WiFiManager::handleWaterius, this));
   //server->on("/generate_204", std::bind(&WiFiManager::handle204, this));  //Android/Chrome OS captive portal check.
   server->on(String(F("/fwlink")).c_str(), std::bind(&WiFiManager::handleRoot, this));  //Microsoft captive portal. Maybe not needed. Might be handled by notFound handler.
   server->onNotFound (std::bind(&WiFiManager::handleNotFound, this));
@@ -203,7 +205,7 @@ boolean  WiFiManager::startConfigPortal(char const *apName, char const *apPasswo
     WiFi.disconnect(); //  this alone is not enough to stop the autoconnecter
     WiFi.mode(WIFI_AP);
     WiFi.persistent(true);
-  }
+  } 
   else {
     //setup AP
     WiFi.mode(WIFI_AP_STA);
@@ -232,33 +234,26 @@ boolean  WiFiManager::startConfigPortal(char const *apName, char const *apPasswo
     //HTTP
     server->handleClient();
 
-    if (connect) {
-      delay(1000);
-      connect = false;
 
-      // if saving with no ssid filled in, reconnect to ssid
-      // will not exit cp 
-      if(_ssid == ""){
-        DEBUG_WM(F("No ssid, skipping wifi"));
-      }
-      else{
-        DEBUG_WM(F("Connecting to new AP"));
-        if (connectWifi(_ssid, _pass) != WL_CONNECTED) {
-          delay(2000);
-          // using user-provided  _ssid, _pass in place of system-stored ssid and pass
-          DEBUG_WM(F("Failed to connect."));
+    if (connect) {
+      connect = false;
+      delay(2000);
+      DEBUG_WM(F("Connecting to new AP"));
+
+      // using user-provided  _ssid, _pass in place of system-stored ssid and pass
+      if (connectWifi(_ssid, _pass) != WL_CONNECTED) {
+        DEBUG_WM(F("Failed to connect."));
+      } else {
+        //connected
+        WiFi.mode(WIFI_STA);
+        //notify that configuration has changed and any optional parameters should be saved
+        if ( _savecallback != NULL) {
+          //todo: check if any custom parameters actually exist, and check if they really changed maybe
+          _savecallback();
         }
-        else {
-          //connected
-          WiFi.mode(WIFI_STA);
-          //notify that configuration has changed and any optional parameters should be saved
-          if ( _savecallback != NULL) {
-            //todo: check if any custom parameters actually exist, and check if they really changed maybe
-            _savecallback();
-          }
-          break;
-        }
+        break;
       }
+
       if (_shouldBreakAfterConfig) {
         //flag set to exit after config after trying to connect
         //notify that configuration has changed and any optional parameters should be saved
@@ -266,18 +261,6 @@ boolean  WiFiManager::startConfigPortal(char const *apName, char const *apPasswo
           //todo: check if any custom parameters actually exist, and check if they really changed maybe
           _savecallback();
         }
-        WiFi.mode(WIFI_STA); // turn off ap
-        // reconnect to ssid
-        // int res = WiFi.begin();
-        // attempt connect for 10 seconds
-        DEBUG_WM(F("Waiting for sta (10 secs) ......."));
-        for(size_t i = 0 ; i<100;i++){
-          if(WiFi.status() == WL_CONNECTED) break;
-          DEBUG_WM(".");
-          // Serial.println(WiFi.status());
-          delay(100);
-        }        
-        delay(1000);
         break;
       }
     }
@@ -459,7 +442,7 @@ void WiFiManager::handleRoot() {
   page += String(F("<h1>"));
   page += _apName;
   page += String(F("</h1>"));
-  page += String(F("<h3>WiFiManager</h3>"));
+  page += String(F("<h3>Ватериус</h3>"));
   page += FPSTR(HTTP_PORTAL_OPTIONS);
   page += FPSTR(HTTP_END);
 
@@ -667,13 +650,13 @@ void WiFiManager::handleWifiSave() {
   }
 
   String page = FPSTR(HTTP_HEAD);
-  page.replace("{v}", "Credentials Saved");
+  page.replace("{v}", "Попытка подключения");
   page += FPSTR(HTTP_SCRIPT);
   page += FPSTR(HTTP_STYLE);
   page += _customHeadElement;
   page += FPSTR(HTTP_HEAD_END);
   page += FPSTR(HTTP_SAVED);
-  page += FPSTR(HTTP_END);
+  page += FPSTR(HTTP_SAVED_END);
 
   server->sendHeader("Content-Length", String(page.length()));
   server->send(200, "text/html", page);
@@ -724,6 +707,15 @@ void WiFiManager::handleInfo() {
   DEBUG_WM(F("Sent info page"));
 }
 
+void WiFiManager::handleStatus() {
+  DEBUG_WM(F("Status"));
+
+  String page(WiFi.status());
+
+  server->sendHeader("Content-Length", String(page.length()));
+  server->send(200, "text/html", page);
+}
+
 /** Handle the reset page */
 void WiFiManager::handleReset() {
   DEBUG_WM(F("Reset"));
@@ -744,6 +736,16 @@ void WiFiManager::handleReset() {
   delay(5000);
   ESP.reset();
   delay(2000);
+}
+
+void WiFiManager::handleWaterius() {
+
+  String message;
+  if (_wateriuscallback != NULL) {
+    _wateriuscallback(message);
+  }
+  server->sendHeader("Content-Length", String(message.length()));
+  server->send ( 200, "application/json", message );
 }
 
 void WiFiManager::handleNotFound() {
@@ -790,6 +792,10 @@ void WiFiManager::setAPCallback( void (*func)(WiFiManager* myWiFiManager) ) {
 //start up save config callback
 void WiFiManager::setSaveConfigCallback( void (*func)(void) ) {
   _savecallback = func;
+}
+
+void WiFiManager::setWateriusCallback(void (*func)(String &)) {
+  _wateriuscallback = func;
 }
 
 //sets a custom element to add to head, like a new style tag
