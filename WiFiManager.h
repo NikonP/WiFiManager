@@ -23,17 +23,18 @@ extern "C" {
 }
 
 const char HTTP_HEAD[] PROGMEM            = "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, user-scalable=no\"/><title>{v}</title>";
-const char HTTP_STYLE[] PROGMEM           = "<style>.c{text-align: center;} div,input{padding:5px;font-size:1em;} input{width:95%;} body{text-align: center;font-family:verdana;} button{border:0;border-radius:0.3rem;background-color:#1fa3ec;color:#fff;line-height:2.4rem;font-size:1.2rem;width:100%;} .q{float: right;width: 64px;text-align: right;} .l{background: url(\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAALVBMVEX///8EBwfBwsLw8PAzNjaCg4NTVVUjJiZDRUUUFxdiZGSho6OSk5Pg4eFydHTCjaf3AAAAZElEQVQ4je2NSw7AIAhEBamKn97/uMXEGBvozkWb9C2Zx4xzWykBhFAeYp9gkLyZE0zIMno9n4g19hmdY39scwqVkOXaxph0ZCXQcqxSpgQpONa59wkRDOL93eAXvimwlbPbwwVAegLS1HGfZAAAAABJRU5ErkJggg==\") no-repeat left center;background-size: 1em;}</style>";
+const char HTTP_STYLE[] PROGMEM           = "<style>.hot{color:#F44336;} .cold{color:#2196F3;} .bad{color:#F44336;} .good{color:#25A341;} .c{text-align: center;} div,input{padding:5px;font-size:1em;} input{width:95%;} body{text-align: center;font-family:verdana;} button{border:0;border-radius:0.3rem;background-color:#1fa3ec;color:#fff;line-height:2.4rem;font-size:1.2rem;width:100%;} .q{float: right;width: 64px;text-align: right;} .l{background: url(\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAALVBMVEX///8EBwfBwsLw8PAzNjaCg4NTVVUjJiZDRUUUFxdiZGSho6OSk5Pg4eFydHTCjaf3AAAAZElEQVQ4je2NSw7AIAhEBamKn97/uMXEGBvozkWb9C2Zx4xzWykBhFAeYp9gkLyZE0zIMno9n4g19hmdY39scwqVkOXaxph0ZCXQcqxSpgQpONa59wkRDOL93eAXvimwlbPbwwVAegLS1HGfZAAAAABJRU5ErkJggg==\") no-repeat left center;background-size: 1em;}</style>";
 const char HTTP_SCRIPT[] PROGMEM          = "<script>function c(l){document.getElementById('s').value=l.innerText||l.textContent;document.getElementById('p').focus();}</script>";
 const char HTTP_HEAD_END[] PROGMEM        = "</head><body><div style='text-align:left;display:inline-block;min-width:260px;'>";
-const char HTTP_PORTAL_OPTIONS[] PROGMEM  = "<form action=\"/wifi\" method=\"get\"><button>Настройка WiFi</button></form>";
+const char HTTP_PORTAL_OPTIONS[] PROGMEM  = "<form action=\"/wifi\" method=\"get\"><button>Настроить</button></form>";
 const char HTTP_ITEM[] PROGMEM            = "<div><a href='#p' onclick='c(this)'>{v}</a>&nbsp;<span class='q {i}'>{r}%</span></div>";
-const char HTTP_FORM_START[] PROGMEM      = "<form method='get' action='wifisave'><input id='s' name='s' length=32 placeholder='SSID'><br/><input id='p' name='p' length=64 type='password' placeholder='password'><br/>";
+const char HTTP_FORM_START[] PROGMEM      = "<form method='get' action='wifisave'><label>или введите имя сети вручную</label><br/><input id='s' name='s' length=32 placeholder='имя сети'><br/><label>введите пароль от вай-фая</label><br/><input id='p' name='p' length=64 type='password' placeholder='password'><br/>";
 const char HTTP_FORM_PARAM[] PROGMEM      = "<br/><input id='{i}' name='{n}' maxlength={l} placeholder='{p}' value='{v}' {c}>";
 const char HTTP_FORM_END[] PROGMEM        = "<br/><button type='submit'>Сохранить</button></form>";
-const char HTTP_SCAN_LINK[] PROGMEM       = "<br/><div class='c'><a href='/wifi'>Scan</a></div>";
-const char HTTP_SAVED[] PROGMEM           = "<div><h3>Подключение к Wi-Fi</h3><br/>Должен погаснуть светодиод при успешном подключении.<div id='st'></div><br/><p id='pr'></p><br/>Если не удастся подключиться, откройте предыдущую страницу и введите корректные данные.</div>";
+const char HTTP_SCAN_LINK[] PROGMEM       = "<br/>";
+const char HTTP_SAVED[] PROGMEM           = "<div><h3>Подключение к вай-фай</h3><br/>При успешном подключении погаснет светодиод. Обычно это происходит в течении 5-15 секунд.<div id='st'></div><br/><p id='pr'></p><br/>Если не удастся подключиться, откройте <a href=\"/wifi\">предыдущую страницу</a> и введите корректные данные вай-фая.</div>";
 const char HTTP_END[] PROGMEM             = "</div></body></html>";
+const char HTTP_CHOOSE_NETWORK[] PROGMEM  = "<label>Выберите свой вай-фай</label><br/>";
 const char HTTP_SAVED_END[] PROGMEM       = "</div></body><script>\
 let timerId = setInterval(function run() {\
 const xhr = new XMLHttpRequest();\
@@ -64,7 +65,7 @@ timerId = setTimeout(run, 5000);\
 </script></html>";
 
 #ifndef WIFI_MANAGER_MAX_PARAMS
-#define WIFI_MANAGER_MAX_PARAMS 10
+#define WIFI_MANAGER_MAX_PARAMS 30
 #endif
 
 class WiFiManagerParameter {
