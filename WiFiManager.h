@@ -292,7 +292,7 @@ class WiFiManager
 
   private:
     std::vector<uint8_t> _menuIds;
-    std::vector<const char *> _menuIdsDefault = {"wifi","info","exit"};
+    std::vector<const char *> _menuIdsDefault = {"wifi"};
 
     // ip configs @todo struct ?
     IPAddress     _ap_static_ip;

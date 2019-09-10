@@ -17,9 +17,11 @@ const char HTTP_HEAD_START[]       PROGMEM = "<!DOCTYPE html><html lang='en'><he
 const char HTTP_SCRIPT[]           PROGMEM = "<script>function c(l){document.getElementById('s').value=l.innerText||l.textContent;document.getElementById('p').focus();}</script>";
 const char HTTP_HEAD_END[]         PROGMEM = "</head><body class='{c}'><div class='wrap'>";
 
-const char HTTP_ROOT_MAIN[]        PROGMEM = "<h1>{v}</h1><h3>WiFiManager</h3>";
+//const char HTTP_ROOT_MAIN[]        PROGMEM = "<h1>{v}</h1><h3>WiFiManager</h3>";
+const char HTTP_ROOT_MAIN[]        PROGMEM = "<h1>Ватериус</h1><p>Убедитесь, что никто не пользуется водой во время настройки</p>"; 
+
 const char * const HTTP_PORTAL_MENU[] PROGMEM = {
-"<form action='/wifi'    method='get'><button>Configure WiFi</button></form><br/>\n", // MENU_WIFI
+"<form action='/wifi'    method='get'><button>Настроить Ватериус</button></form><br/>\n", // MENU_WIFI
 "<form action='/0wifi'   method='get'><button>Configure WiFi (No Scan)</button></form><br/>\n", // MENU_WIFINOSCAN
 "<form action='/info'    method='get'><button>Info</button></form><br/>\n", // MENU_INFO
 "<form action='/param'   method='get'><button>Setup</button></form><br/>\n",//MENU_PARAM
@@ -37,31 +39,33 @@ const char HTTP_ITEM_QP[]          PROGMEM = "<div class='q {h}'>{r}%</div>"; //
 const char HTTP_ITEM[]             PROGMEM = "<div><a href='#p' onclick='c(this)'>{v}</a>{qi}{qp}</div>"; // {q} = HTTP_ITEM_QI, {r} = HTTP_ITEM_QP
 // const char HTTP_ITEM[]            PROGMEM = "<div><a href='#p' onclick='c(this)'>{v}</a> {R} {r}% {q} {e}</div>"; // test all tokens
 
+const char WIFI_PAGE_TEXT[]        PROGMEM = "<h3>Настройка</h3><p>Выберите свой вай-фай</p>";
 const char HTTP_FORM_START[]       PROGMEM = "<form method='POST' action='{v}'>";
-const char HTTP_FORM_WIFI[]        PROGMEM = "<label for='s'>SSID</label><input id='s' name='s' maxlength='32' autocorrect='off' autocapitalize='none' placeholder='{v}'><br/><label for='p'>Password</label><input id='p' name='p' maxlength='64' type='password' placeholder=''>";
+const char HTTP_FORM_WIFI[]        PROGMEM = "<label for='s'>название сети</label><input id='s' name='s' maxlength='32' autocorrect='off' autocapitalize='none' placeholder='{v}'><br/><label for='p'>пароль от вай-фая</label><input id='p' name='p' maxlength='64' type='password' placeholder=''>";
 const char HTTP_FORM_WIFI_END[]    PROGMEM = "";
 const char HTTP_FORM_STATIC_HEAD[] PROGMEM = "<hr><br/>";
-const char HTTP_FORM_END[]         PROGMEM = "<br/><br/><button type='submit'>Save</button></form>";
+const char HTTP_FORM_END[]         PROGMEM = "<br/><br/><button type='submit'>Сохранить</button></form>";
 const char HTTP_FORM_LABEL[]       PROGMEM = "<label for='{i}'>{t}</label>";
 const char HTTP_FORM_PARAM_HEAD[]  PROGMEM = "<hr><br/>";
 const char HTTP_FORM_PARAM[]       PROGMEM = "<br/><input id='{i}' name='{n}' maxlength='{l}' value='{v}' {c}>";
 
-const char HTTP_SCAN_LINK[]        PROGMEM = "<br/><form action='/wifi?refresh=1' method='POST'><button name='refresh' value='1'>Refresh</button></form>";
-const char HTTP_SAVED[]            PROGMEM = "<div class='msg'>Saving Credentials<br/>Trying to connect ESP to network.<br />If it fails reconnect to AP to try again</div>";
-const char HTTP_PARAMSAVED[]       PROGMEM = "<div class='msg'>Saved<br/></div>";
+const char HTTP_SCAN_LINK[]        PROGMEM = "<br/><form action='/wifi?refresh=1' method='POST'><button name='refresh' value='1'>Обновить</button></form>";
+const char HTTP_SAVED[]            PROGMEM = "<h3>Подключение к вай-фаю</h3><div class='msg'><br/>При успешном подключении погаснет светодиод. Обычно это происходит в течении 5-10 секунд. Нажмите коротко на кнопку, чтобы Ватериус отправил показания на сайт.<br /><br />Если не удалось подключиться, откройте <a href=\"/wifi\">предыдущую страницу</a> и введите корректные данные.<br /></div>";
+const char HTTP_PARAMSAVED[]       PROGMEM = "<div class='msg'>Сохранено<br/></div>";
 const char HTTP_END[]              PROGMEM = "</div></body></html>";
 const char HTTP_ERASEBTN[]         PROGMEM = "<br/><form action='/erase' method='get'><button class='D'>Erase WiFi Config</button></form>";
 
-const char HTTP_STATUS_ON[]        PROGMEM = "<div class='msg P'><strong>Connected</strong> to {v}<br/><em><small>with IP {i}</small></em></div>";
-const char HTTP_STATUS_OFF[]       PROGMEM = "<div class='msg {c}'><strong>Not Connected</strong> to {v}{r}</div>";
-const char HTTP_STATUS_OFFPW[]     PROGMEM = "<br/>Authentication Failure"; // STATION_WRONG_PASSWORD,  no eps32
-const char HTTP_STATUS_OFFNOAP[]   PROGMEM = "<br/>AP not found";   // WL_NO_SSID_AVAIL
-const char HTTP_STATUS_OFFFAIL[]   PROGMEM = "<br/>Could not Connect"; // WL_CONNECT_FAILED
-const char HTTP_STATUS_NONE[]      PROGMEM = "<div class='msg'>No AP set</div>";
+const char HTTP_STATUS_ON[]        PROGMEM = "<div class='msg P'><strong>Подключен</strong> к {v}<br/><em><small> IP {i}</small></em></div>";
+const char HTTP_STATUS_OFF[]       PROGMEM = "<div class='msg {c}'><strong>Отключен</strong> от {v}{r}</div>";
+const char HTTP_STATUS_OFFPW[]     PROGMEM = "<br/>Ошибка аутентификации"; // STATION_WRONG_PASSWORD,  no eps32
+const char HTTP_STATUS_OFFNOAP[]   PROGMEM = "<br/>Точка доступа не найдена";   // WL_NO_SSID_AVAIL
+const char HTTP_STATUS_OFFFAIL[]   PROGMEM = "<br/>Нет соединения"; // WL_CONNECT_FAILED
+const char HTTP_STATUS_NONE[]      PROGMEM = "<div class='msg'>Не указана точка доступа</div>";
 const char HTTP_BR[]               PROGMEM = "<br/>";
 
 const char HTTP_STYLE[]            PROGMEM = "<style>"
-".c,body{text-align:center;font-family:verdana}div,input{padding:5px;font-size:1em;margin:5px 0;box-sizing:border-box;}"
+".hot{color:#F44336;}.cold{color:#2196F3;}.bad{color:#F44336;}.good{color:#25A341;}.shift{margin-top:10px}"
+".c,body{text-align:center;font-family:verdana}div,input{padding:5px;font-size:1em;box-sizing:border-box;}"
 "input,button,.msg{border-radius:.3rem;width: 100%}"
 "button,input[type='button'],input[type='submit']{cursor:pointer;border:0;background-color:#1fa3ec;color:#fff;line-height:2.4rem;font-size:1.2rem;width:100%}"
 "input[type='file']{border:1px solid #1fa3ec}"
@@ -180,8 +184,8 @@ const char S_GET[]                PROGMEM = "GET";
 const char S_POST[]               PROGMEM = "POST";
 const char S_NA[]                 PROGMEM = "Unknown";
 
-const char S_titlewifisaved[]     PROGMEM = "Credentials Saved";
-const char S_titlewifi[]          PROGMEM = "Config ESP";
+const char S_titlewifisaved[]     PROGMEM = "Попытка подключения";
+const char S_titlewifi[]          PROGMEM = "Настройка Ватериуса";
 const char S_titleinfo[]          PROGMEM = "Info";
 const char S_titleparam[]         PROGMEM = "Setup";
 const char S_titleparamsaved[]    PROGMEM = "Setup Saved";
@@ -190,7 +194,8 @@ const char S_titlereset[]         PROGMEM = "Reset";
 const char S_titleerase[]         PROGMEM = "Erase";
 const char S_titleclose[]         PROGMEM = "Close";
 const char S_options[]            PROGMEM = "options";
-const char S_nonetworks[]         PROGMEM = "No networks found. Refresh to scan again.";
+const char S_nonetworks[]         PROGMEM = "Вай-фай сети не найдены. Перезагрузите страницу для повторного сканирования.";
+
 const char S_staticip[]           PROGMEM = "Static IP";
 const char S_staticgw[]           PROGMEM = "Static Gateway";
 const char S_staticdns[]          PROGMEM = "Static DNS";

@@ -950,6 +950,7 @@ void WiFiManager::handleWifi(boolean scan) {
   DEBUG_WM(DEBUG_VERBOSE,F("<- HTTP Wifi"));
   handleRequest();
   String page = getHTTPHead(FPSTR(S_titlewifi)); // @token titlewifi
+  page += FPSTR(WIFI_PAGE_TEXT);
   if (scan) {
     // DEBUG_WM(DEBUG_DEV,"refresh flag:",server->hasArg(F("refresh")));
     WiFi_scanNetworks(server->hasArg(F("refresh")),false); //wifiscan, force if arg refresh
