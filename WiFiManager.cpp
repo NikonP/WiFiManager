@@ -931,7 +931,7 @@ void WiFiManager::handleRoot() {
   page += str;
   page += FPSTR(HTTP_PORTAL_OPTIONS);
   page += getMenuOut();
-  reportStatus(page);
+  //reportStatus(page);
   page += FPSTR(HTTP_END);
 
   server->sendHeader(FPSTR(HTTP_HEAD_CL), String(page.length()));
@@ -973,8 +973,8 @@ void WiFiManager::handleWifi(boolean scan) {
     page += getParamOut();
   }
   page += FPSTR(HTTP_FORM_END);
-  page += FPSTR(HTTP_SCAN_LINK);
-  reportStatus(page);
+  //page += FPSTR(HTTP_SCAN_LINK);
+  //reportStatus(page);
   page += FPSTR(HTTP_END);
 
   server->sendHeader(FPSTR(HTTP_HEAD_CL), String(page.length()));

@@ -39,7 +39,7 @@ const char HTTP_ITEM_QP[]          PROGMEM = "<div class='q {h}'>{r}%</div>"; //
 const char HTTP_ITEM[]             PROGMEM = "<div><a href='#p' onclick='c(this)'>{v}</a>{qi}{qp}</div>"; // {q} = HTTP_ITEM_QI, {r} = HTTP_ITEM_QP
 // const char HTTP_ITEM[]            PROGMEM = "<div><a href='#p' onclick='c(this)'>{v}</a> {R} {r}% {q} {e}</div>"; // test all tokens
 
-const char WIFI_PAGE_TEXT[]        PROGMEM = "<h3>Настройка</h3><p>Выберите свой вай-фай</p>";
+const char WIFI_PAGE_TEXT[]        PROGMEM = "<h2>Настройка</h2><p>Выберите свой вай-фай</p>";
 const char HTTP_FORM_START[]       PROGMEM = "<form method='POST' action='{v}'>";
 const char HTTP_FORM_WIFI[]        PROGMEM = "<label for='s'>название сети</label><input id='s' name='s' maxlength='32' autocorrect='off' autocapitalize='none' placeholder='{v}'><br/><label for='p'>пароль от вай-фая</label><input id='p' name='p' maxlength='64' type='password' placeholder=''>";
 const char HTTP_FORM_WIFI_END[]    PROGMEM = "";
@@ -64,8 +64,9 @@ const char HTTP_STATUS_NONE[]      PROGMEM = "<div class='msg'>Не указан
 const char HTTP_BR[]               PROGMEM = "<br/>";
 
 const char HTTP_STYLE[]            PROGMEM = "<style>"
-".hot{color:#F44336;}.cold{color:#2196F3;}.bad{color:#F44336;}.good{color:#25A341;}.shift{margin-top:10px}"
-".c,body{text-align:center;font-family:verdana}div,input{padding:5px;font-size:1em;box-sizing:border-box;}"
+".hot{color:#F44336;}.cold{color:#2196F3;}.bad{color:#F44336;}.good{color:#25A341;}"
+".c,body{text-align:center;font-family:verdana}"
+"div{padding:5px 0px 5px 0px;}input{margin-bottom:10px;padding:5px;font-size:1em;box-sizing:border-box;}"
 "input,button,.msg{border-radius:.3rem;width: 100%}"
 "button,input[type='button'],input[type='submit']{cursor:pointer;border:0;background-color:#1fa3ec;color:#fff;line-height:2.4rem;font-size:1.2rem;width:100%}"
 "input[type='file']{border:1px solid #1fa3ec}"
