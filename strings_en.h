@@ -66,7 +66,10 @@ const char HTTP_SCAN_LINK[]        PROGMEM = "<br/><form action='/wifi?refresh=1
 const char HTTP_SAVED[]            PROGMEM = "<h3>Подключение к Wi-Fi</h3>\
     <p>При успешном подключении погаснет светодиод. Обычно это происходит в течении 5-10 секунд.</p>\
     <p>Нажмите коротко на кнопку, чтобы Ватериус отправил показания на сайт.</p>\
-    <p>Если не удалось подключиться, начните с начала.</p>";
+    <p>Если не удалось подключиться, начните с начала.</p>\
+    <form action='/wifi' method='get'>\
+        <button class='button-second'>Начать с начала</button>\
+    </form>";
 const char HTTP_PARAMSAVED[]       PROGMEM = "<div class='msg'>Сохранено<br/></div>";
 const char HTTP_END[]              PROGMEM = "</div></body></html>"; //div 'wrap'
 const char HTTP_ERASEBTN[]         PROGMEM = "<br/><form action='/erase' method='get'><button class='D'>Erase WiFi Config</button></form>";
