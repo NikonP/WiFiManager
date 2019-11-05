@@ -13,15 +13,28 @@
 #ifndef WIFI_MANAGER_OVERRIDE_STRINGS
 // !!! THIS DOES NOT WORK, you cannot define in a sketch, if anyone one knows how to order includes to be able to do this help!
 
+//https://www.freeformatter.com/css-minifier.html#ad-output
+//https://htmlformatter.com/ 
+
 const char HTTP_HEAD_START[]       PROGMEM = "<!DOCTYPE html><html lang='en'><head><meta name='format-detection' content='telephone=no'><meta charset='UTF-8'><meta  name='viewport' content='width=device-width,initial-scale=1,user-scalable=no'/><title>{v}</title>";
-const char HTTP_SCRIPT[]           PROGMEM = "<script>function c(l){document.getElementById('s').value=l.innerText||l.textContent;document.getElementById('p').focus();}</script>";
+const char HTTP_SCRIPT[]           PROGMEM = "<script>function c(l){document.getElementById('s').value=l.value;document.getElementById('p').focus();}</script>";
 const char HTTP_HEAD_END[]         PROGMEM = "</head><body class='{c}'><div class='wrap'>";
 
-//const char HTTP_ROOT_MAIN[]        PROGMEM = "<h1>{v}</h1><h3>WiFiManager</h3>";
-const char HTTP_ROOT_MAIN[]        PROGMEM = "<h1>Ватериус</h1><p>Убедитесь, что никто не пользуется водой во время настройки</p>"; 
+const char HTTP_ROOT_MAIN[]        PROGMEM = "<p>Не пользуйтесь водой во время настройки</p>"; 
 
+const char HTTP_DIV_LOGO[]         PROGMEM = "<div class='logo-cont'>\
+        <div class='logo-img'>\
+            <svg width='34' height='34' viewBox='0 0 34 34' fill='none' xmlns='http://www.w3.org/2000/svg' alt='логотип Ватериус' >\
+                <rect width='34' height='34' rx='5' transform='matrix(1 0 0 -1 0 34)' fill='black'/>\
+                <circle r='6.32686' transform='matrix(1 0 0 -1 9.07588 16.9998)' fill='#1655F5'/>\
+                <circle r='6.32686' transform='matrix(1 0 0 -1 24.9226 16.9998)' fill='#F53410'/>\
+            </svg>\
+        </div>\
+        <p class='logo-text'>Ватериус</p>\
+    </div>";
+    
 const char * const HTTP_PORTAL_MENU[] PROGMEM = {
-"<form action='/wifi'    method='get'><button>Настроить Ватериус</button></form><br/>\n", // MENU_WIFI
+"<form action='/wifi'    method='get'><button class='button'>Настроить Ватериус</button></form><br/>\n", // MENU_WIFI
 "<form action='/0wifi'   method='get'><button>Configure WiFi (No Scan)</button></form><br/>\n", // MENU_WIFINOSCAN
 "<form action='/info'    method='get'><button>Info</button></form><br/>\n", // MENU_INFO
 "<form action='/param'   method='get'><button>Setup</button></form><br/>\n",//MENU_PARAM
@@ -36,23 +49,26 @@ const char * const HTTP_PORTAL_MENU[] PROGMEM = {
 const char HTTP_PORTAL_OPTIONS[]   PROGMEM = "";
 const char HTTP_ITEM_QI[]          PROGMEM = "<div role='img' aria-label='{r}%' title='{r}%' class='q q-{q} {i} {h}'></div>"; // rssi icons
 const char HTTP_ITEM_QP[]          PROGMEM = "<div class='q {h}'>{r}%</div>"; // rssi percentage
-const char HTTP_ITEM[]             PROGMEM = "<div><a href='#p' onclick='c(this)'>{v}</a>{qi}{qp}</div>"; // {q} = HTTP_ITEM_QI, {r} = HTTP_ITEM_QP
+const char HTTP_ITEM[]             PROGMEM = "<label class='radcontainer'>{v}<input type='radio' name='network' value='{v}' onclick='c(this)'><span class='radiomark'></span>{qi}{qp}</label>";
 // const char HTTP_ITEM[]            PROGMEM = "<div><a href='#p' onclick='c(this)'>{v}</a> {R} {r}% {q} {e}</div>"; // test all tokens
 
-const char WIFI_PAGE_TEXT[]        PROGMEM = "<h2>Настройка</h2><p>Выберите свой вай-фай</p>";
+const char WIFI_PAGE_TEXT[]        PROGMEM = "<h1>Настройка</h1><p>Устройство отключится через: <a id='timerId'></a> секунд</p><p>Выберите свой wi-fi</p>";
 const char HTTP_FORM_START[]       PROGMEM = "<form method='POST' action='{v}'>";
-const char HTTP_FORM_WIFI[]        PROGMEM = "<label for='s'>название сети</label><input id='s' name='s' maxlength='32' autocorrect='off' autocapitalize='none' placeholder='{v}'><br/><label for='p'>пароль от вай-фая</label><input id='p' name='p' maxlength='64' type='password' placeholder=''>";
+const char HTTP_FORM_WIFI[]        PROGMEM = "<label for='s'>название сети</label><input id='s' name='s' maxlength='32' autocorrect='off' autocapitalize='none' placeholder='{v}'><br/><label for='p'>пароль от wi-fi</label><input id='p' name='p' maxlength='64' type='password' placeholder=''>";
 const char HTTP_FORM_WIFI_END[]    PROGMEM = "";
 const char HTTP_FORM_STATIC_HEAD[] PROGMEM = "<hr><br/>";
-const char HTTP_FORM_END[]         PROGMEM = "<br/><br/><button type='submit'>Сохранить</button></form>";
+const char HTTP_FORM_END[]         PROGMEM = "<br/><br/><button type='submit' class='button'>Сохранить</button></form>";
 const char HTTP_FORM_LABEL[]       PROGMEM = "<label for='{i}'>{t}</label>";
 const char HTTP_FORM_PARAM_HEAD[]  PROGMEM = "<hr><br/>";
 const char HTTP_FORM_PARAM[]       PROGMEM = "<br/><input id='{i}' name='{n}' maxlength='{l}' value='{v}' {c}>";
 
 const char HTTP_SCAN_LINK[]        PROGMEM = "<br/><form action='/wifi?refresh=1' method='POST'><button name='refresh' value='1'>Обновить</button></form>";
-const char HTTP_SAVED[]            PROGMEM = "<h3>Подключение к вай-фаю</h3><div class='msg'><br/>При успешном подключении погаснет светодиод. Обычно это происходит в течении 5-10 секунд. Нажмите коротко на кнопку, чтобы Ватериус отправил показания на сайт.<br /><br />Если не удалось подключиться, откройте <a href=\"/wifi\">предыдущую страницу</a> и введите корректные данные.<br /></div>";
+const char HTTP_SAVED[]            PROGMEM = "<h3>Подключение к Wi-Fi</h3>\
+    <p>При успешном подключении погаснет светодиод. Обычно это происходит в течении 5-10 секунд.</p>\
+    <p>Нажмите коротко на кнопку, чтобы Ватериус отправил показания на сайт.</p>\
+    <p>Если не удалось подключиться, начните с начала.</p>";
 const char HTTP_PARAMSAVED[]       PROGMEM = "<div class='msg'>Сохранено<br/></div>";
-const char HTTP_END[]              PROGMEM = "</div></body></html>";
+const char HTTP_END[]              PROGMEM = "</div></body></html>"; //div 'wrap'
 const char HTTP_ERASEBTN[]         PROGMEM = "<br/><form action='/erase' method='get'><button class='D'>Erase WiFi Config</button></form>";
 
 const char HTTP_STATUS_ON[]        PROGMEM = "<div class='msg P'><strong>Подключен</strong> к {v}<br/><em><small> IP {i}</small></em></div>";
@@ -91,6 +107,13 @@ const char HTTP_STYLE[]            PROGMEM = "<style>"
 "body.invert,body.invert a,body.invert h1 {background-color:#060606;color:#fff;}"
 "body.invert .msg{color:#fff;background-color:#282828;border-top:1px solid #555;border-right:1px solid #555;border-bottom:1px solid #555;}"
 "body.invert .q[role=img]{-webkit-filter:invert(1);filter:invert(1);}"
+// custom
+".logo-cont{display:flex}.logo-img{width:35.19px;padding-top:15px}.logo-text{display:inline;font-weight:bold;color:#1655f5;font-size:48.8px;padding-left:16px;margin:0}"
+"h1{font-size:80px;line-height:80px;margin-top:80px;margin-bottom:40px;color:#1655f5}h3{font-size:40px;line-height:40px;margin-bottom:20px;margin-top:40px}"
+".button{display:inline-block;box-sizing:border-box;vertical-align:middle;text-align:center;white-space:nowrap;font-size:20px;line-height:26px;color:#fefefe;background-color:#1655f5;text-decoration:none;cursor:pointer;transition:.5s;border-radius:24px;margin:20px 0rem;padding:12px 32px;box-shadow:0 18px 40px 0 rgba(22,85,245,0.3)}.button:hover{color:#e4e4e4;background-color:#2f65ef;cursor:pointer;transition:0s;box-shadow:0 18px 40px 0 rgba(48,103,243,0.3)}.button:active{color:#e4e4e4;background-color:#0b45d8;cursor:pointer;transition:0s;box-shadow:0 18px 40px 0 rgba(13,70,216,0.3)}"
+".button-second{display:inline-block;box-sizing:border-box;vertical-align:middle;text-align:center;white-space:nowrap;font-size:16px;line-height:16px;color:#1655f5;text-decoration:none;cursor:pointer;transition:.5s;border:1px solid #1655f5;border-radius:24px;margin:16px 0rem;padding:8px 22.4px 8px}.button-second:hover{color:#93aef3;border:1px solid #93aef3;transition:0s}.button-second:active{color:#0b45d8;border:1px solid #0b45d8;transition:0s}"
+".container{display:block;position:relative;padding-left:35px;margin-bottom:12px;cursor:pointer;font-size:22px;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.container input{position:absolute;opacity:0;cursor:pointer;height:0;width:0}.checkmark{position:absolute;top:0;left:0;height:25px;width:25px;background-color:#eee}.container:hover input ~ .checkmark{background-color:#ccc}.container input:checked ~ .checkmark{background-color:#2196f3}.checkmark:after{content:"";position:absolute;display:none}.container input:checked ~ .checkmark:after{display:block}.container .checkmark:after{left:9px;top:5px;width:5px;height:10px;border:solid white;border-width:0 3px 3px 0;-webkit-transform:rotate(45deg);-ms-transform:rotate(45deg);transform:rotate(45deg)}"
+".radcontainer{display:block;position:relative;padding-left:35px;margin-bottom:12px;cursor:pointer;font-size:22px;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.radcontainer input{position:absolute;opacity:0;cursor:pointer}.radiomark{position:absolute;top:0;left:0;height:25px;width:25px;background-color:#eee;border-radius:50%}.radcontainer:hover input ~ .radiomark{background-color:#ccc}.radcontainer input:checked ~ .radiomark{background-color:#2196f3}.radiomark:after{content:"";position:absolute;display:none}.radcontainer input:checked ~ .radiomark:after{display:block}.radcontainer .radiomark:after{top:9px;left:9px;width:8px;height:8px;border-radius:50%;background:white}"
 "</style>";
 
 const char HTTP_HELP[]             PROGMEM =

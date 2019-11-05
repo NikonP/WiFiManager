@@ -926,8 +926,9 @@ void WiFiManager::handleRoot() {
   if (captivePortal()) return; // If captive portal redirect instead of displaying the page
   handleRequest();
   String page = getHTTPHead(FPSTR(S_options)); // @token options
-  String str  = FPSTR(HTTP_ROOT_MAIN);
-  str.replace(FPSTR(T_v),configPortalActive ? _apName : WiFi.localIP().toString()); // use ip if ap is not active for heading
+  page += FPSTR(HTTP_DIV_LOGO);
+  String str = FPSTR(HTTP_ROOT_MAIN);
+  //str.replace(FPSTR(T_v),configPortalActive ? _apName : WiFi.localIP().toString()); // use ip if ap is not active for heading
   page += str;
   page += FPSTR(HTTP_PORTAL_OPTIONS);
   page += getMenuOut();
@@ -950,6 +951,7 @@ void WiFiManager::handleWifi(boolean scan) {
   DEBUG_WM(DEBUG_VERBOSE,F("<- HTTP Wifi"));
   handleRequest();
   String page = getHTTPHead(FPSTR(S_titlewifi)); // @token titlewifi
+  page += FPSTR(HTTP_DIV_LOGO);
   page += FPSTR(WIFI_PAGE_TEXT);
   if (scan) {
     // DEBUG_WM(DEBUG_DEV,"refresh flag:",server->hasArg(F("refresh")));
