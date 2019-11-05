@@ -1345,6 +1345,7 @@ void WiFiManager::handleWifiSave() {
   }
 
   String page = getHTTPHead(FPSTR(S_titlewifisaved)); // @token titlewifisaved
+  page += FPSTR(HTTP_DIV_LOGO);
   page += FPSTR(HTTP_SAVED);
   page += FPSTR(HTTP_END);
 
