@@ -17,7 +17,48 @@
 //https://htmlformatter.com/ 
 
 const char HTTP_HEAD_START[]       PROGMEM = "<!DOCTYPE html><html lang='en'><head><meta name='format-detection' content='telephone=no'><meta charset='UTF-8'><meta  name='viewport' content='width=device-width,initial-scale=1,user-scalable=no'/><title>{v}</title>";
-const char HTTP_SCRIPT[]           PROGMEM = "<script>function c(l){document.getElementById('s').value=l.value;document.getElementById('p').focus();}</script>";
+
+const char HTTP_SCRIPT[] PROGMEM = "<script>\
+		let timerId = setTimeout(function run() {\
+			const xhr = new XMLHttpRequest();\
+			xhr.open('GET', '/states');xhr.timeout = 500;\
+			xhr.send();\
+			xhr.onreadystatechange = function (e) {\
+				if(xhr.readyState === 4 && xhr.status === 200) {\
+					var data = JSON.parse(xhr.responseText);\
+						Object.keys(data).forEach(function(key) {\
+						document.getElementById(key).innerHTML = data[key];\
+					})\
+				};\
+			};\
+			timerId = setTimeout(run, 2000);\
+		}, 2000);\
+        function sTimer(t, elem) {\
+            var timer = t;\
+            var i = setInterval(function () {\
+                elem.textContent = timer;\
+                if (--timer < 0) {\
+                    clearInterval(i);\
+                    alert('Ватериус выключился. Начните настройку заново нажав долго кнопку.');\
+                }\
+            }, 1000);\
+        };\
+\
+        window.onload = function () {\
+            var t = 300;\
+            elem = document.querySelector('#timerId');\
+            sTimer(t, elem);\
+        };\
+\
+        function showMe() {\
+            var chbox = document.getElementById('chbox');\
+            var vis = 'none';\
+            if(chbox.checked) { vis = 'block'; }\
+            document.getElementById('advanced').style.display = vis;\
+        };\
+    function c(l){document.getElementById('s').value=l.value;document.getElementById('p').focus();}\
+    </script>";
+
 const char HTTP_HEAD_END[]         PROGMEM = "</head><body class='{c}'><div class='wrap'>";
 
 const char HTTP_ROOT_MAIN[]        PROGMEM = "<p>Не пользуйтесь водой во время настройки</p>"; 
@@ -145,45 +186,7 @@ const char HTTP_HELP[]             PROGMEM =
  "<p/>More information about WiFiManager at <a href='https://github.com/tzapu/WiFiManager'>https://github.com/tzapu/WiFiManager</a>.";
 
 
-const char HTTP_CONFIG_JS[] PROGMEM = "<script>\
-		let timerId = setTimeout(function run() {\
-			const xhr = new XMLHttpRequest();\
-			xhr.open('GET', '/states');xhr.timeout = 500;\
-			xhr.send();\
-			xhr.onreadystatechange = function (e) {\
-				if(xhr.readyState === 4 && xhr.status === 200) {\
-					var data = JSON.parse(xhr.responseText);\
-						Object.keys(data).forEach(function(key) {\
-						document.getElementById(key).innerHTML = data[key];\
-					})\
-				};\
-			};\
-			timerId = setTimeout(run, 2000);\
-		}, 2000);\
-        function sTimer(t, elem) {\
-            var timer = t;\
-            var i = setInterval(function () {\
-                elem.textContent = timer;\
-                if (--timer < 0) {\
-                    clearInterval(i);\
-                    alert('Ватериус выключился. Начните настройку заново нажав долго кнопку.');\
-                }\
-            }, 1000);\
-        };\
-\
-        window.onload = function () {\
-            var t = 300;\
-            elem = document.querySelector('#timerId');\
-            sTimer(t, elem);\
-        };\
-\
-        function showMe() {\
-            var chbox = document.getElementById('chbox');\
-            var vis = 'none';\
-            if(chbox.checked) { vis = 'block'; }\
-            document.getElementById('advanced').style.display = vis;\
-        };\
-    </script>";
+
 
 // Info html
 #ifdef ESP32
@@ -241,8 +244,8 @@ const char S_titleexit[]          PROGMEM = "Exit";
 const char S_titlereset[]         PROGMEM = "Reset";
 const char S_titleerase[]         PROGMEM = "Erase";
 const char S_titleclose[]         PROGMEM = "Close";
-const char S_options[]            PROGMEM = "options";
-const char S_nonetworks[]         PROGMEM = "Вай-фай сети не найдены. Перезагрузите страницу для повторного сканирования.";
+const char S_options[]            PROGMEM = "Настройка Ватериуса";
+const char S_nonetworks[]         PROGMEM = "Wi-Fi сети не найдены. Перезагрузите страницу для повторного сканирования.";
 
 const char S_staticip[]           PROGMEM = "Static IP";
 const char S_staticgw[]           PROGMEM = "Static Gateway";

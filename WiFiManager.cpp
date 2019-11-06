@@ -977,7 +977,6 @@ void WiFiManager::handleWifi(boolean scan) {
   }
   DEBUG_WM(DEBUG_DEV,F("Page len="), page.length());
   page += FPSTR(HTTP_FORM_END);
-  page += FPSTR(HTTP_CONFIG_JS);
   //page += FPSTR(HTTP_SCAN_LINK);
   //reportStatus(page);
   page += FPSTR(HTTP_END);
