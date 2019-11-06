@@ -309,7 +309,6 @@ const char T_R[]                  PROGMEM = "{R}"; // @token R
 const char T_h[]                  PROGMEM = "{h}"; // @token h
 
 // http
-const char HTTP_HEAD_CL[]         PROGMEM = "Content-Length";
 const char HTTP_HEAD_CT[]         PROGMEM = "text/html";
 const char HTTP_HEAD_CT2[]        PROGMEM = "text/plain";
 const char HTTP_HEAD_CORS[]       PROGMEM = "Access-Control-Allow-Origin";
