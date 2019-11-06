@@ -114,7 +114,7 @@ const char HTTP_STYLE[]            PROGMEM = "<style>"
 ".logo-cont{display:flex}.logo-img{width:35.19px;padding-top:15px}.logo-text{display:inline;font-weight:bold;color:#1655f5;font-size:48.8px;padding-left:16px;margin:0}"
 "h1{font-size:60px;line-height:60px;margin-top:40px;margin-bottom:40px;color:#1655f5}h3{font-size:40px;line-height:40px;margin-bottom:20px;margin-top:40px}"
 ".button{display:inline-block;box-sizing:border-box;vertical-align:middle;text-align:center;white-space:nowrap;font-size:20px;line-height:26px;color:#fefefe;background-color:#1655f5;text-decoration:none;cursor:pointer;transition:.5s;border-radius:24px;margin:20px 0rem;padding:12px 32px;box-shadow:0 18px 40px 0 rgba(22,85,245,0.3)}.button:hover{color:#e4e4e4;background-color:#2f65ef;cursor:pointer;transition:0s;box-shadow:0 18px 40px 0 rgba(48,103,243,0.3)}.button:active{color:#e4e4e4;background-color:#0b45d8;cursor:pointer;transition:0s;box-shadow:0 18px 40px 0 rgba(13,70,216,0.3)}"
-".button-second{display:inline-block;box-sizing:border-box;vertical-align:middle;text-align:center;white-space:nowrap;font-size:16px;line-height:16px;color:#1655f5;text-decoration:none;cursor:pointer;transition:.5s;border:1px solid #1655f5;border-radius:24px;margin:16px 0rem;padding:8px 22.4px 8px}.button-second:hover{color:#93aef3;border:1px solid #93aef3;transition:0s}.button-second:active{color:#0b45d8;border:1px solid #0b45d8;transition:0s}"
+".button-second{display:inline-block;box-sizing:border-box;vertical-align:middle;text-align:center;white-space:nowrap;font-size:16px;line-height:16px;color:#1655f5;background-color:#FFFFFF;text-decoration:none;cursor:pointer;transition:.5s;border:1px solid #1655f5;border-radius:24px;margin:16px 0rem;padding:8px 22.4px 8px}.button-second:hover{color:#93aef3;border:1px solid #93aef3;transition:0s}.button-second:active{color:#0b45d8;border:1px solid #0b45d8;transition:0s}"
 ".container{display:block;position:relative;padding-left:35px;margin-bottom:12px;cursor:pointer;font-size:22px;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.container input{position:absolute;opacity:0;cursor:pointer;height:0;width:0}.checkmark{position:absolute;top:0;left:0;height:25px;width:25px;background-color:#eee}.container:hover input ~ .checkmark{background-color:#ccc}.container input:checked ~ .checkmark{background-color:#1655f5}.checkmark:after{content:'';position:absolute;display:none}.container input:checked ~ .checkmark:after{display:block}.container .checkmark:after{left:9px;top:5px;width:5px;height:10px;border:solid white;border-width:0 3px 3px 0;-webkit-transform:rotate(45deg);-ms-transform:rotate(45deg);transform:rotate(45deg)}"
 ".radcontainer{display:block;position:relative;padding-left:35px;margin-bottom:12px;cursor:pointer;font-size:22px;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.radcontainer input{position:absolute;opacity:0;cursor:pointer}.radiomark{position:absolute;top:0;left:0;height:25px;width:25px;background-color:#eee;border-radius:50%}.radcontainer:hover input ~ .radiomark{background-color:#ccc}.radcontainer input:checked ~ .radiomark{background-color:#1655f5}.radiomark:after{content:'';position:absolute;display:none}.radcontainer input:checked ~ .radiomark:after{display:block}.radcontainer .radiomark:after{top:9px;left:9px;width:8px;height:8px;border-radius:50%;background:white}"
 "</style>";
@@ -144,25 +144,46 @@ const char HTTP_HELP[]             PROGMEM =
  "</table>"
  "<p/>More information about WiFiManager at <a href='https://github.com/tzapu/WiFiManager'>https://github.com/tzapu/WiFiManager</a>.";
 
-#ifdef JSTEST
-const char HTTP_JS[] PROGMEM = 
-"<script>function postAjax(url, data, success) {"
-"    var params = typeof data == 'string' ? data : Object.keys(data).map("
-"            function(k){ return encodeURIComponent(k) + '=' + encodeURIComponent(data[k]) }"
-"        ).join('&');"
-"    var xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject(\"Microsoft.XMLHTTP\");"
-"    xhr.open('POST', url);"
-"    xhr.onreadystatechange = function() {"
-"        if (xhr.readyState>3 && xhr.status==200) { success(xhr.responseText); }"
-"    };"
-"    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');"
-"    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');"
-"    xhr.send(params);"
-"    return xhr;}"
-"postAjax('/status', 'p1=1&p2=Hello+World', function(data){ console.log(data); });"
-"postAjax('/status', { p1: 1, p2: 'Hello World' }, function(data){ console.log(data); });"
-"</script>";
-#endif
+
+const char HTTP_CONFIG_JS[] PROGMEM = "<script>\
+		let timerId = setTimeout(function run() {\
+			const xhr = new XMLHttpRequest();\
+			xhr.open('GET', '/states');xhr.timeout = 500;\
+			xhr.send();\
+			xhr.onreadystatechange = function (e) {\
+				if(xhr.readyState === 4 && xhr.status === 200) {\
+					var data = JSON.parse(xhr.responseText);\
+						Object.keys(data).forEach(function(key) {\
+						document.getElementById(key).innerHTML = data[key];\
+					})\
+				};\
+			};\
+			timerId = setTimeout(run, 2000);\
+		}, 2000);\
+        function sTimer(t, elem) {\
+            var timer = t;\
+            var i = setInterval(function () {\
+                elem.textContent = timer;\
+                if (--timer < 0) {\
+                    clearInterval(i);\
+                    alert('Ватериус выключился. Начните настройку заново нажав долго кнопку.');\
+                }\
+            }, 1000);\
+        };\
+\
+        window.onload = function () {\
+            var t = 300;\
+            elem = document.querySelector('#timerId');\
+            sTimer(t, elem);\
+        };\
+\
+        function showMe() {\
+            var chbox = document.getElementById('chbox');\
+            var vis = 'none';\
+            if(chbox.checked) { vis = 'block'; }\
+            document.getElementById('advanced').style.display = vis;\
+        };\
+    </script>";
 
 // Info html
 #ifdef ESP32

@@ -973,9 +973,11 @@ void WiFiManager::handleWifi(boolean scan) {
     page += FPSTR(HTTP_FORM_PARAM_HEAD);
     DEBUG_WM(DEBUG_DEV,F("Custom params"), _paramsCount);
     page += getParamOut();
+  } else {
   }
   DEBUG_WM(DEBUG_DEV,F("Page len="), page.length());
   page += FPSTR(HTTP_FORM_END);
+  page += FPSTR(HTTP_CONFIG_JS);
   //page += FPSTR(HTTP_SCAN_LINK);
   //reportStatus(page);
   page += FPSTR(HTTP_END);
