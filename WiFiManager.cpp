@@ -1140,7 +1140,6 @@ String WiFiManager::WiFiManager::getScanItemOut(){
       String HTTP_ITEM_STR = FPSTR(HTTP_ITEM);
 
       // toggle icons with percentage
-      HTTP_ITEM_STR.replace("{qp}", FPSTR(HTTP_ITEM_QP));
       HTTP_ITEM_STR.replace("{h}",_scanDispOptions ? "" : "h");
       HTTP_ITEM_STR.replace("{qi}", FPSTR(HTTP_ITEM_QI));
       HTTP_ITEM_STR.replace("{h}",_scanDispOptions ? "h" : "");

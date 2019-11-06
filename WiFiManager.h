@@ -360,7 +360,7 @@ class WiFiManager
     String        _bodyClass              = ""; // class to add to body
 
     // internal options
-    boolean       _preloadwifiscan        = true;  // preload wifiscan if true
+    boolean       _preloadwifiscan        = false;  // preload wifiscan if true
     boolean       _disableIpFields        = false; // modify function of setShow_X_Fields(false), forces ip fields off instead of default show if set, eg. _staShowStaticFields=-1
 
     String        _wificountry            = "";  // country code, @todo define in strings lang

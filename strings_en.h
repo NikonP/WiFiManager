@@ -15,64 +15,17 @@
 
 //https://www.freeformatter.com/css-minifier.html#ad-output
 //https://htmlformatter.com/ 
+//http://minifycode.com/html-minifier/
 
 const char HTTP_HEAD_START[]       PROGMEM = "<!DOCTYPE html><html lang='en'><head><meta name='format-detection' content='telephone=no'><meta charset='UTF-8'><meta  name='viewport' content='width=device-width,initial-scale=1,user-scalable=no'/><title>{v}</title>";
 
-const char HTTP_SCRIPT[] PROGMEM = "<script>\
-		let timerId = setTimeout(function run() {\
-			const xhr = new XMLHttpRequest();\
-			xhr.open('GET', '/states');xhr.timeout = 500;\
-			xhr.send();\
-			xhr.onreadystatechange = function (e) {\
-				if(xhr.readyState === 4 && xhr.status === 200) {\
-					var data = JSON.parse(xhr.responseText);\
-						Object.keys(data).forEach(function(key) {\
-						document.getElementById(key).innerHTML = data[key];\
-					})\
-				};\
-			};\
-			timerId = setTimeout(run, 2000);\
-		}, 2000);\
-        function sTimer(t, elem) {\
-            var timer = t;\
-            var i = setInterval(function () {\
-                elem.textContent = timer;\
-                if (--timer < 0) {\
-                    clearInterval(i);\
-                    alert('Ватериус выключился. Начните настройку заново нажав долго кнопку.');\
-                }\
-            }, 1000);\
-        };\
-\
-        window.onload = function () {\
-            var t = 300;\
-            elem = document.querySelector('#timerId');\
-            sTimer(t, elem);\
-        };\
-\
-        function showMe() {\
-            var chbox = document.getElementById('chbox');\
-            var vis = 'none';\
-            if(chbox.checked) { vis = 'block'; }\
-            document.getElementById('advanced').style.display = vis;\
-        };\
-    function c(l){document.getElementById('s').value=l.value;document.getElementById('p').focus();}\
-    </script>";
+const char HTTP_SCRIPT[]           PROGMEM = "<script>function g(e){return document.getElementById(e);}let timerId=setTimeout(function run(){const xhr=new XMLHttpRequest();xhr.open('GET','/states');xhr.timeout=500;xhr.send();xhr.onreadystatechange=function(e){if(xhr.readyState===4&&xhr.status===200){var data=JSON.parse(xhr.responseText);Object.keys(data).forEach(function(key){g(key).innerHTML=data[key];})};};timerId=setTimeout(run,2000);},2000);function sTimer(t,elem){var timer=t;var i=setInterval(function(){elem.textContent=timer;if(--timer<0){clearInterval(i);alert('Ватериус выключился. Начните настройку заново нажав долго кнопку.');}},1000);};window.onload=function(){var t=300;elem=document.querySelector('#timerId');sTimer(t,elem);};function showMe(){var chbox=g('chbox');var vis='none';if(chbox.checked){vis='block';}g('advanced').style.display=vis;};function c(l){g('s').value=l.value;g('p').focus();}</script>";
 
 const char HTTP_HEAD_END[]         PROGMEM = "</head><body class='{c}'><div class='wrap'>";
 
 const char HTTP_ROOT_MAIN[]        PROGMEM = "<p>Не пользуйтесь водой во время настройки</p>"; 
 
-const char HTTP_DIV_LOGO[]         PROGMEM = "<div class='logo-cont'>\
-        <div class='logo-img'>\
-            <svg width='34' height='34' viewBox='0 0 34 34' fill='none' xmlns='http://www.w3.org/2000/svg' alt='логотип Ватериус' >\
-                <rect width='34' height='34' rx='5' transform='matrix(1 0 0 -1 0 34)' fill='black'/>\
-                <circle r='6.32686' transform='matrix(1 0 0 -1 9.07588 16.9998)' fill='#1655F5'/>\
-                <circle r='6.32686' transform='matrix(1 0 0 -1 24.9226 16.9998)' fill='#F53410'/>\
-            </svg>\
-        </div>\
-        <p class='logo-text'>Ватериус</p>\
-    </div>";
+const char HTTP_DIV_LOGO[]         PROGMEM = "<div class='logo-cont'><div class='logo-img'><svg width='34' height='34' viewBox='0 0 34 34' fill='none' xmlns='http://www.w3.org/2000/svg' alt='логотип Ватериус'><rect width='34' height='34' rx='5' transform='matrix(1 0 0 -1 0 34)' fill='black'/><circle r='6.32686' transform='matrix(1 0 0 -1 9.07588 16.9998)' fill='#1655F5'/><circle r='6.32686' transform='matrix(1 0 0 -1 24.9226 16.9998)' fill='#F53410'/></svg></div><p class='logo-text'>Ватериус</p></div>";
     
 const char * const HTTP_PORTAL_MENU[] PROGMEM = {
 "<form action='/wifi'    method='get'><button class='button'>Настроить Ватериус</button></form><br/>\n", // MENU_WIFI
@@ -88,9 +41,8 @@ const char * const HTTP_PORTAL_MENU[] PROGMEM = {
 
 // const char HTTP_PORTAL_OPTIONS[]   PROGMEM = strcat(HTTP_PORTAL_MENU[0] , HTTP_PORTAL_MENU[3] , HTTP_PORTAL_MENU[7]);
 const char HTTP_PORTAL_OPTIONS[]   PROGMEM = "";
-const char HTTP_ITEM_QI[]          PROGMEM = "<div role='img' aria-label='{r}%' title='{r}%' class='q q-{q} {i} {h}'></div>"; // rssi icons
-const char HTTP_ITEM_QP[]          PROGMEM = "<div class='q {h}'>{r}%</div>"; // rssi percentage
-const char HTTP_ITEM[]             PROGMEM = "<label class='radcontainer'>{v}<input type='radio' name='network' value='{v}' onclick='c(this)'><span class='radiomark'></span>{qi}{qp}</label>";
+const char HTTP_ITEM_QI[]          PROGMEM = "<div role='img' class='q q-{q} {i} {h}'></div>"; // rssi icons
+const char HTTP_ITEM[]             PROGMEM = "<label class='radcnt'>{v}<input type='radio' name='n' value='{v}' onclick='c(this)'><span class='rmrk'></span>{qi}</label>";
 // const char HTTP_ITEM[]            PROGMEM = "<div><a href='#p' onclick='c(this)'>{v}</a> {R} {r}% {q} {e}</div>"; // test all tokens
 
 const char WIFI_PAGE_TEXT[]        PROGMEM = "<h1>Настройка</h1><p>Устройство отключится через: <a id='timerId'></a> секунд</p><p>Выберите свою Wi-Fi сеть:</p>";
@@ -104,13 +56,8 @@ const char HTTP_FORM_PARAM_HEAD[]  PROGMEM = "<hr><br/>";
 const char HTTP_FORM_PARAM[]       PROGMEM = "<br/><input id='{i}' name='{n}' maxlength='{l}' value='{v}' {c}>";
 
 const char HTTP_SCAN_LINK[]        PROGMEM = "<br/><form action='/wifi?refresh=1' method='POST'><button name='refresh' value='1'>Обновить</button></form>";
-const char HTTP_SAVED[]            PROGMEM = "<h3>Подключение к Wi-Fi</h3>\
-    <p>При успешном подключении погаснет светодиод. Обычно это происходит в течении 5-10 секунд.</p>\
-    <p>Нажмите коротко на кнопку, чтобы Ватериус отправил показания на сайт.</p>\
-    <p>Если не удалось подключиться, начните с начала.</p>\
-    <form action='/wifi' method='get'>\
-        <button class='button-second'>Начать с начала</button>\
-    </form>";
+const char HTTP_SAVED[]            PROGMEM = "<h3>Подключение к Wi-Fi</h3><p>При успешном подключении погаснет светодиод. Обычно это происходит в течении 5-10 секунд.</p><p>Нажмите коротко на кнопку, чтобы Ватериус отправил показания на сайт.</p><p>Если не удалось подключиться, начните с начала.</p><form action='/wifi' method='get'> <button class='button-second'>Начать с начала</button></form>";
+
 const char HTTP_PARAMSAVED[]       PROGMEM = "<div class='msg'>Сохранено<br/></div>";
 const char HTTP_END[]              PROGMEM = "</div></body></html>"; //div 'wrap'
 const char HTTP_ERASEBTN[]         PROGMEM = "<br/><form action='/erase' method='get'><button class='D'>Erase WiFi Config</button></form>";
@@ -124,26 +71,23 @@ const char HTTP_STATUS_NONE[]      PROGMEM = "<div class='msg'>Не указан
 const char HTTP_BR[]               PROGMEM = "<br/>";
 
 const char HTTP_STYLE[]            PROGMEM = "<style>"
-".hot{color:#F44336;}.cold{color:#1655f5;}.bad{color:#F44336;}.good{color:#25A341;}"
+".bad,.hot{color:#f44336}.cold{color:#1655f5}.good{color:#25a341}"
 ".c,body{text-align:center;font-family:verdana}"
-"div{padding:5px 0px 5px 0px;}input{margin-bottom:10px;padding:5px;font-size:1em;box-sizing:border-box;}"
-"input,button,.msg{border-radius:.3rem;width: 100%}"
-"button,input[type='button'],input[type='submit']{cursor:pointer;border:0;background-color:#1655f5;color:#fff;line-height:2.4rem;font-size:1.2rem;width:100%}"
-".wrap {text-align:left;display:inline-block;min-width:260px;max-width:500px}"
+"div{padding:5px 0 5px 0}input{margin-bottom:10px;padding:5px;font-size:1em;box-sizing:border-box}"
+"button,input{border-radius:.3rem;width:100%}button,input[type=button],input[type=submit]{cursor:pointer;border:0;background-color:#1655f5;color:#fff;line-height:2.4rem;font-size:1.2rem}"
+".wrap{text-align:left;display:inline-block;min-width:260px;max-width:500px}"
 // quality icons
-".q{height:16px;margin:0;padding:0 5px;text-align:right;min-width:38px;float:right}.q.q-0:after{background-position-x:0}.q.q-1:after{background-position-x:-16px}.q.q-2:after{background-position-x:-32px}.q.q-3:after{background-position-x:-48px}.q.q-4:after{background-position-x:-64px}.q.l:before{background-position-x:-80px;padding-right:5px}.q:after,.q:before{content:'';width:16px;height:16px;display:inline-block;background-repeat:no-repeat;background-position: 16px 0;"
-"background-image:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAAAQCAMAAADeZIrLAAAAJFBMVEX///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADHJj5lAAAAC3RSTlMAIjN3iJmqu8zd7vF8pzcAAABsSURBVHja7Y1BCsAwCASNSVo3/v+/BUEiXnIoXkoX5jAQMxTHzK9cVSnvDxwD8bFx8PhZ9q8FmghXBhqA1faxk92PsxvRc2CCCFdhQCbRkLoAQ3q/wWUBqG35ZxtVzW4Ed6LngPyBU2CobdIDQ5oPWI5nCUwAAAAASUVORK5CYII=');}"
+".q{height:16px;margin:0;padding:0 5px;text-align:right;min-width:38px;float:right}.q.q-0:after{background-position-x:0}.q.q-1:after{background-position-x:-16px}.q.q-2:after{background-position-x:-32px}.q.q-3:after{background-position-x:-48px}.q.q-4:after{background-position-x:-64px}.q.l:before{background-position-x:-80px;padding-right:5px}.q:after,.q:before{content:'';width:16px;height:16px;display:inline-block;background-repeat:no-repeat;background-position:16px 0;"
+"background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAAAQCAMAAADeZIrLAAAAJFBMVEX///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADHJj5lAAAAC3RSTlMAIjN3iJmqu8zd7vF8pzcAAABsSURBVHja7Y1BCsAwCASNSVo3/v+/BUEiXnIoXkoX5jAQMxTHzK9cVSnvDxwD8bFx8PhZ9q8FmghXBhqA1faxk92PsxvRc2CCCFdhQCbRkLoAQ3q/wWUBqG35ZxtVzW4Ed6LngPyBU2CobdIDQ5oPWI5nCUwAAAAASUVORK5CYII=)}"
 // icons @2x media query (32px rescaled)
-"@media (-webkit-min-device-pixel-ratio: 2),(min-resolution: 192dpi){.q:before,.q:after {"
-"background-image:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALwAAAAgCAMAAACfM+KhAAAALVBMVEX///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAOrOgAAAADnRSTlMAESIzRGZ3iJmqu8zd7gKjCLQAAACmSURBVHgB7dDBCoMwEEXRmKlVY3L//3NLhyzqIqSUggy8uxnhCR5Mo8xLt+14aZ7wwgsvvPA/ofv9+44334UXXngvb6XsFhO/VoC2RsSv9J7x8BnYLW+AjT56ud/uePMdb7IP8Bsc/e7h8Cfk912ghsNXWPpDC4hvN+D1560A1QPORyh84VKLjjdvfPFm++i9EWq0348XXnjhhT+4dIbCW+WjZim9AKk4UZMnnCEuAAAAAElFTkSuQmCC');"
-"background-size: 95px 16px;}}"
+"@media (-webkit-min-device-pixel-ratio:2),(min-resolution:192dpi){.q:after,.q:before{"
+"background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALwAAAAgCAMAAACfM+KhAAAALVBMVEX///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAOrOgAAAADnRSTlMAESIzRGZ3iJmqu8zd7gKjCLQAAACmSURBVHgB7dDBCoMwEEXRmKlVY3L//3NLhyzqIqSUggy8uxnhCR5Mo8xLt+14aZ7wwgsvvPA/ofv9+44334UXXngvb6XsFhO/VoC2RsSv9J7x8BnYLW+AjT56ud/uePMdb7IP8Bsc/e7h8Cfk912ghsNXWPpDC4hvN+D1560A1QPORyh84VKLjjdvfPFm++i9EWq0348XXnjhhT+4dIbCW+WjZim9AKk4UZMnnCEuAAAAAElFTkSuQmCC);"
+"background-size:95px 16px}}"
 // custom
-".logo-cont{display:flex}.logo-img{width:35.19px;padding-top:15px}.logo-text{display:inline;font-weight:bold;color:#1655f5;font-size:48.8px;padding-left:16px;margin:0}"
+".logo-cont{display:flex}.logo-img{width:35.19px;padding-top:15px}.logo-text{display:inline;font-weight:700;color:#1655f5;font-size:48.8px;padding-left:16px;margin:0}"
 "h1{font-size:60px;line-height:60px;margin-top:40px;margin-bottom:40px;color:#1655f5}h3{font-size:40px;line-height:40px;margin-bottom:20px;margin-top:40px}"
-".button{display:inline-block;box-sizing:border-box;vertical-align:middle;text-align:center;white-space:nowrap;font-size:20px;line-height:26px;color:#fefefe;background-color:#1655f5;text-decoration:none;cursor:pointer;transition:.5s;border-radius:24px;margin:20px 0rem;padding:12px 32px;box-shadow:0 18px 40px 0 rgba(22,85,245,0.3)}.button:hover{color:#e4e4e4;background-color:#2f65ef;cursor:pointer;transition:0s;box-shadow:0 18px 40px 0 rgba(48,103,243,0.3)}.button:active{color:#e4e4e4;background-color:#0b45d8;cursor:pointer;transition:0s;box-shadow:0 18px 40px 0 rgba(13,70,216,0.3)}"
-".button-second{display:inline-block;box-sizing:border-box;vertical-align:middle;text-align:center;white-space:nowrap;font-size:16px;line-height:16px;color:#1655f5;background-color:#FFFFFF;text-decoration:none;cursor:pointer;transition:.5s;border:1px solid #1655f5;border-radius:24px;margin:16px 0rem;padding:8px 22.4px 8px}.button-second:hover{color:#93aef3;border:1px solid #93aef3;transition:0s}.button-second:active{color:#0b45d8;border:1px solid #0b45d8;transition:0s}"
-".container{display:block;position:relative;padding-left:35px;margin-bottom:12px;cursor:pointer;font-size:22px;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.container input{position:absolute;opacity:0;cursor:pointer;height:0;width:0}.checkmark{position:absolute;top:0;left:0;height:25px;width:25px;background-color:#eee}.container:hover input ~ .checkmark{background-color:#ccc}.container input:checked ~ .checkmark{background-color:#1655f5}.checkmark:after{content:'';position:absolute;display:none}.container input:checked ~ .checkmark:after{display:block}.container .checkmark:after{left:9px;top:5px;width:5px;height:10px;border:solid white;border-width:0 3px 3px 0;-webkit-transform:rotate(45deg);-ms-transform:rotate(45deg);transform:rotate(45deg)}"
-".radcontainer{display:block;position:relative;padding-left:35px;margin-bottom:12px;cursor:pointer;font-size:22px;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.radcontainer input{position:absolute;opacity:0;cursor:pointer}.radiomark{position:absolute;top:0;left:0;height:25px;width:25px;background-color:#eee;border-radius:50%}.radcontainer:hover input ~ .radiomark{background-color:#ccc}.radcontainer input:checked ~ .radiomark{background-color:#1655f5}.radiomark:after{content:'';position:absolute;display:none}.radcontainer input:checked ~ .radiomark:after{display:block}.radcontainer .radiomark:after{top:9px;left:9px;width:8px;height:8px;border-radius:50%;background:white}"
+".button,.button-second{display:inline-block;box-sizing:border-box;vertical-align:middle;text-align:center;white-space:nowrap;font-size:20px;line-height:26px;text-decoration:none;cursor:pointer;transition:.5s;border-radius:24px;margin:20px 0;padding:12px 32px}.button{color:#fefefe;background-color:#1655f5;box-shadow:0 18px 40px 0 rgba(22,85,245,.3)}.button:hover{color:#e4e4e4;background-color:#2f65ef;cursor:pointer;box-shadow:0 18px 40px 0 rgba(48,103,243,.3)}.button:active{color:#e4e4e4;background-color:#0b45d8;cursor:pointer;box-shadow:0 18px 40px 0 rgba(13,70,216,.3)}.button-second{color:#1655f5;background-color:#fff;border:1px solid #1655f5}.button-second:hover{color:#93aef3;border:1px solid #93aef3}.button-second:active{color:#0b45d8;border:1px solid #0b45d8}"
+".cnt,.radcnt{display:block;position:relative;padding-left:35px;margin-bottom:12px;cursor:pointer;font-size:22px;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.cnt input,.radcnt input{position:absolute;opacity:0;cursor:pointer}.cnt input{height:0;width:0}.mrk,.rmrk{position:absolute;top:0;left:0;height:25px;width:25px;background-color:#eee}.rmrk{border-radius:50%}.cnt:hover input~.mrk{background-color:#ccc}.cnt input:checked~.mrk{background-color:#1655f5}.radcnt:hover input~.rmrk{background-color:#ccc}.radcnt input:checked~.rmrk{background-color:#1655f5}.mrk:after,.rmrk:after{content:'';position:absolute;display:none}.cnt input:checked~.mrk:after{display:block}.radcnt input:checked~.rmrk:after{display:block}.cnt .mrk:after{left:9px;top:5px;width:5px;height:10px;border:solid #fff;border-width:0 3px 3px 0;-webkit-transform:rotate(45deg);-ms-transform:rotate(45deg);transform:rotate(45deg)}.radcnt .rmrk:after{left:9px;top:9px;width:8px;height:8px;border-radius:50%;background:#fff}"
 "</style>";
 
 const char HTTP_HELP[]             PROGMEM =
