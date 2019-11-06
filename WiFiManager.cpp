@@ -1283,6 +1283,7 @@ String WiFiManager::getParamOut(){
       } else {
         pitem = _params[i]->getCustomHTML();
       }
+      DEBUG_WM(DEBUG_NOTIFY,F("page len="), page.length());
 
       page += pitem;
     }

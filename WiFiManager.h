@@ -475,7 +475,7 @@ class WiFiManager
     } wm_debuglevel_t;
 
     boolean       _debug              = true;
-    uint8_t       _debugLevel         = DEBUG_ERROR;
+    uint8_t       _debugLevel         = DEBUG_MAX;
     Stream&     _debugPort; // debug output stream ref
     
     template <typename Generic>
