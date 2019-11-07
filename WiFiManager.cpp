@@ -895,21 +895,31 @@ String WiFiManager::getHTTPHead(String title){
   String page;
   page += FPSTR(HTTP_HEAD_START);
   page.replace(FPSTR(T_v), title);
-  page += FPSTR(HTTP_SCRIPT);
-  page += FPSTR(HTTP_STYLE);
-  page += _customHeadElement;
-
-  if(_bodyClass != ""){
-    String p = FPSTR(HTTP_HEAD_END);
-    p.replace(FPSTR(T_c), _bodyClass); // add class str
-    page += p;
-  }
-  else {
-    page += FPSTR(HTTP_HEAD_END);
-  } 
-
+  page += FPSTR(HTTP_TITLE_STYLE);
+  page += FPSTR(HTTP_HEAD_END);
   return page;
 }
+
+String WiFiManager::getHTTPConfigHead(String title){
+  String page;
+  page += FPSTR(HTTP_HEAD_START);
+  page.replace(FPSTR(T_v), title);
+  page += FPSTR(HTTP_CONF_SCRIPT);
+  page += FPSTR(HTTP_CONF_STYLE);
+  page += FPSTR(HTTP_HEAD_END);
+  return page;
+}
+
+
+String WiFiManager::getHTTPEndHead(String title){
+  String page;
+  page += FPSTR(HTTP_HEAD_START);
+  page.replace(FPSTR(T_v), title);
+  page += FPSTR(HTTP_END_STYLE);
+  page += FPSTR(HTTP_HEAD_END);
+  return page;
+}
+
 
 /** 
  * HTTPD handler for page requests
@@ -949,7 +959,7 @@ void WiFiManager::handleRoot() {
 void WiFiManager::handleWifi(boolean scan) {
   DEBUG_WM(DEBUG_VERBOSE,F("<- HTTP Wifi"));
   handleRequest();
-  String page = getHTTPHead(FPSTR(S_titlewifi)); // @token titlewifi
+  String page = getHTTPConfigHead(FPSTR(S_titlewifi)); // @token titlewifi
   page += FPSTR(HTTP_DIV_LOGO);
   page += FPSTR(WIFI_PAGE_TEXT);
   if (scan) {
@@ -1343,7 +1353,7 @@ void WiFiManager::handleWifiSave() {
     DEBUG_WM(DEBUG_DEV,F("static DNS:"),dns);
   }
 
-  String page = getHTTPHead(FPSTR(S_titlewifisaved)); // @token titlewifisaved
+  String page = getHTTPEndHead(FPSTR(S_titlewifisaved)); // @token titlewifisaved
   page += FPSTR(HTTP_DIV_LOGO);
   page += FPSTR(HTTP_SAVED);
   page += FPSTR(HTTP_END);
