@@ -61,7 +61,7 @@ const char HTTP_FORM_PARAM[]       PROGMEM = "<input class='it' id='{i}' name='{
 const char HTTP_SCAN_LINK[]        PROGMEM = "<br/><form action='/wifi?refresh=1' method='POST'><button name='refresh' value='1'>Обновить</button></form>";
 const char HTTP_SAVED[]            PROGMEM = "<h1>Настройка</h1>"
 "<h3>Подключение к Wi-Fi</h3>"
-"<p>При успешном подключении погаснет светодиод. Обычно это происходит в&nbsp;течение 5&ndash;10&nbsp;секунд.</p>"
+"<p>При успешном подключении через 5&ndash;10&nbsp;секунд погаснет светодиод.</p>"
 "<p>Нажмите коротко на&nbsp;кнопку, чтобы Ватериус отправил показания на&nbsp;сайт.</p>"
 "<p>Если не&nbsp;удалось подключиться, начните с&nbsp;начала.</p>"
 "<form action='/wifi' method='get'> <button class='button-second'>Начать с начала</button></form>";
