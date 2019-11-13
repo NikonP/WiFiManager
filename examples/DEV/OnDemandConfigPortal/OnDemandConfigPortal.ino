@@ -1,11 +1,15 @@
 /**
  * This is a kind of unit test for DEV for now
+ * It contains many of the public methods
+ * 
  */
 #include <WiFiManager.h> // https://github.com/tzapu/WiFiManager
 #include <time.h>
 
 #define TRIGGER_PIN 0
 const char* modes[] = { "NULL", "STA", "AP", "STA+AP" };
+
+unsigned long mtime = 0;
 
 // // #define MYOLED
 
@@ -165,14 +169,16 @@ void setup() {
   // wm.setAPStaticIPConfig(IPAddress(10,0,1,1), IPAddress(10,0,1,1), IPAddress(255,255,255,0));
   // wm.setAPStaticIPConfig(IPAddress(10,0,1,99), IPAddress(10,0,1,1), IPAddress(255,255,255,0)); 
 
-  // WiFi.mode(WIFI_STA);
-  // const wifi_country_t COUNTRY_US{"US",1,11,WIFI_COUNTRY_POLICY_AUTO};
-  // const wifi_country_t COUNTRY_CN{"CN",1,13,WIFI_COUNTRY_POLICY_AUTO};
-  // const wifi_country_t COUNTRY_JP{"JP",1,14,WIFI_COUNTRY_POLICY_AUTO};
-  // esp_wifi_set_country(&COUNTRY_US);
-
-  // wm.setCountry("US");
+  // set country
+  wm.setCountry("US"); // setting wifi country seems to improve OSX soft ap connectivity, may help others as well
   
+  // set channel
+  wm.setWiFiAPChannel(13);
+  
+  // set AP hidden
+  // wm.setAPHidden(true);
+
+  // set configrportal timeout
   wm.setConfigPortalTimeout(120);
   // wm.startConfigPortal("AutoConnectAP", "password");
 
@@ -187,6 +193,8 @@ void setup() {
     print_oled("Not Connected",2);
   }
   else if(TEST_CP) {
+    delay(1000);
+    Serial.println("TEST_CP ENABLED");
     // start configportal always
     wm.setConfigPortalTimeout(60);
     wm.startConfigPortal();
@@ -202,16 +210,20 @@ void setup() {
 void loop() {
   // is configuration portal requested?
   if ( digitalRead(TRIGGER_PIN) == LOW ) {
-    Serial.println("BUTTON PRESSED");
-    wm.setConfigPortalTimeout(120);
+    delay(100);
+    if ( digitalRead(TRIGGER_PIN) == LOW ){
+      Serial.println("BUTTON PRESSED");
+      wm.setConfigPortalTimeout(140);
 
-    // disable captive portal redirection
-    // wm.setCaptivePortalEnable(false);
-    
-    if (!wm.startConfigPortal("OnDemandAP")) {
-      Serial.println("failed to connect and hit timeout");
-      delay(3000);
-    } else {
+      // disable captive portal redirection
+      // wm.setCaptivePortalEnable(false);
+      
+      if (!wm.startConfigPortal("OnDemandAP","12345678")) {
+        Serial.println("failed to connect and hit timeout");
+        delay(3000);
+      }
+    }
+    else {
       //if you get here you have connected to the WiFi
       Serial.println("connected...yeey :)");
       print_oled("Connected\nIP: " + WiFi.localIP().toString() + "\nSSID: " + WiFi.SSID(),1);    
@@ -219,9 +231,12 @@ void loop() {
     }
   }
 
-  if(WiFi.status() == WL_CONNECTED)  getTime();
+  if(WiFi.status() == WL_CONNECTED && millis()-mtime > 10000 ){
+    getTime();
+    mtime = millis();
+  }
   // put your main code here, to run repeatedly:
-  delay(5000);
+  delay(100);
 }
 
 void getTime() {
