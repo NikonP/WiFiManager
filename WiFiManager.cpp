@@ -969,13 +969,14 @@ void WiFiManager::handleRoot() {
 void WiFiManager::handleWifi(boolean scan) {
   DEBUG_WM(DEBUG_VERBOSE,F("<- HTTP Wifi"));
   handleRequest();
-  String page = getHTTPConfigHead(FPSTR(S_titlewifi)); // @token titlewifi
+  String page; page.reserve(12000);
+  page = getHTTPConfigHead(FPSTR(S_titlewifi)); // @token titlewifi
   page += FPSTR(HTTP_DIV_LOGO);
   page += FPSTR(WIFI_PAGE_TEXT);
   if (scan) {
     // DEBUG_WM(DEBUG_DEV,"refresh flag:",server->hasArg(F("refresh")));
     WiFi_scanNetworks(server->hasArg(F("refresh")),false); //wifiscan, force if arg refresh
-    page += getScanItemOut();
+    getScanItemOut(page);
   }
   String pitem = "";
 
@@ -987,12 +988,12 @@ void WiFiManager::handleWifi(boolean scan) {
   pitem.replace(FPSTR(T_v), WiFi_SSID());
   page += pitem;
 
-  page += getStaticOut();
+  getStaticOut(page);
   page += FPSTR(HTTP_FORM_WIFI_END);
   if(_paramsInWifi && _paramsCount>0){
     page += FPSTR(HTTP_FORM_PARAM_HEAD);
     DEBUG_WM(DEBUG_DEV,F("Custom params"), _paramsCount);
-    page += getParamOut();
+    getParamOut(page);
   } else {
   }
   DEBUG_WM(DEBUG_DEV,F("Page len="), page.length());
@@ -1021,7 +1022,7 @@ void WiFiManager::handleParam(){
   pitem.replace(FPSTR(T_v), F("paramsave"));
   page += pitem;
 
-  page += getParamOut();
+  getParamOut(page);
   page += FPSTR(HTTP_FORM_END);
   reportStatus(page);
   page += FPSTR(HTTP_END);
@@ -1107,9 +1108,8 @@ bool WiFiManager::WiFi_scanNetworks(bool force,bool async){
     return false;
 }
 
-String WiFiManager::WiFiManager::getScanItemOut(){
-    String page;
-
+void WiFiManager::WiFiManager::getScanItemOut(String &page){
+    
     if(!_numNetworks) WiFi_scanNetworks(); // scan in case this gets called before any scans
 
     int n = _numNetworks;
@@ -1204,8 +1204,6 @@ String WiFiManager::WiFiManager::getScanItemOut(){
       }
       page += FPSTR(HTTP_BR);
     }
-
-    return page;
 }
 
 String WiFiManager::getIpForm(String id, String title, String value){
@@ -1222,8 +1220,8 @@ String WiFiManager::getIpForm(String id, String title, String value){
     return item;  
 }
 
-String WiFiManager::getStaticOut(){
-  String page;
+void WiFiManager::getStaticOut(String &page){
+  
   if ((_staShowStaticFields || _sta_static_ip) && _staShowStaticFields>=0) {
     DEBUG_WM(DEBUG_DEV,"_staShowStaticFields");
     page += FPSTR(HTTP_FORM_STATIC_HEAD);
@@ -1241,13 +1239,10 @@ String WiFiManager::getStaticOut(){
   }
 
   if(page!="") page += FPSTR(HTTP_BR); // @todo remove these, use css
-
-  return page;
 }
 
-String WiFiManager::getParamOut(){
-  String page;
-
+void WiFiManager::getParamOut(String &page){
+  
   if(_paramsCount > 0){
 
     String HTTP_PARAM_temp = FPSTR(HTTP_FORM_LABEL);
@@ -1302,13 +1297,11 @@ String WiFiManager::getParamOut(){
       } else {
         pitem = _params[i]->getCustomHTML();
       }
-      DEBUG_WM(DEBUG_NOTIFY,F("page len="), page.length());
+      DEBUG_WM(DEBUG_NOTIFY,F("custp len="), page.length());
 
       page += pitem;
     }
   }
-
-  return page;
 }
 
 void WiFiManager::handleWiFiStatus(){

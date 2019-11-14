@@ -450,10 +450,10 @@ class WiFiManager
     #endif
 
     // output helpers
-    String        getParamOut();
+    void        getParamOut(String &);
     String        getIpForm(String id, String title, String value);
-    String        getScanItemOut();
-    String        getStaticOut();
+    void        getScanItemOut(String &);
+    void        getStaticOut(String &);
     String        getHTTPHead(String title);
     String        getHTTPConfigHead(String title);
     String        getHTTPEndHead(String title);
