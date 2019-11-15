@@ -300,7 +300,6 @@ class WiFiManager
     
     std::unique_ptr<WM_WebServer> server;
 
-  private:
     std::vector<uint8_t> _menuIds;
     std::vector<const char *> _menuIdsDefault = {"wifi","info","exit"};
 
@@ -318,9 +317,10 @@ class WiFiManager
     const byte    HTTP_PORT               = 80;
     String        _apName                 = "no-net";
     String        _apPassword             = "";
+  
     String        _ssid                   = "";
     String        _pass                   = "";
-    
+
     // options flags
     unsigned long _configPortalTimeout    = 0; // ms close config portal loop if set (depending on  _cp/webClientCheck options)
     unsigned long _connectTimeout         = 0; // ms stop trying to connect to ap if set
@@ -405,6 +405,7 @@ class WiFiManager
     void          updateConxResult(uint8_t status);
 
     // webserver handlers
+public:
     void          handleRoot();
     void          handleWifi(boolean scan);
     void          handleWifiSave();
@@ -425,7 +426,7 @@ class WiFiManager
     boolean       configPortalHasTimeout();
     uint8_t       processConfigPortal();
     void          stopCaptivePortal();
-
+    
     // wifi platform abstractions
     bool          WiFi_Mode(WiFiMode_t m);
     bool          WiFi_Mode(WiFiMode_t m,bool persistent);
@@ -474,12 +475,13 @@ class WiFiManager
     boolean       portalAbortResult   = false;
     boolean       storeSTAmode        = true; // option store persistent STA mode in connectwifi 
     int           timer               = 0;
-    
+
     // WiFiManagerParameter
     int         _paramsCount          = 0;
     int         _max_params;
     WiFiManagerParameter** _params    = NULL;
 
+private:
     // debugging
     typedef enum {
         DEBUG_ERROR     = 0,
@@ -490,7 +492,7 @@ class WiFiManager
     } wm_debuglevel_t;
 
     boolean       _debug              = true;
-    uint8_t       _debugLevel         = DEBUG_DEV;
+    uint8_t       _debugLevel         = DEBUG_MAX;
     Stream&     _debugPort; // debug output stream ref
     
     template <typename Generic>
