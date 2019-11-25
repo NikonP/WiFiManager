@@ -485,16 +485,29 @@ class WiFiManager
     // debugging
     typedef enum {
         DEBUG_ERROR     = 0,
-        DEBUG_NOTIFY    = 1, // default
+        DEBUG_NOTIFY    = 1, // default stable
         DEBUG_VERBOSE   = 2,
-        DEBUG_DEV       = 3,
+        DEBUG_DEV       = 3, // default dev
         DEBUG_MAX       = 4
     } wm_debuglevel_t;
 
-    boolean       _debug              = true;
-    uint8_t       _debugLevel         = DEBUG_MAX;
-    Stream&     _debugPort; // debug output stream ref
+    boolean _debug  = true;
     
+    // build debuglevel support
+    // @todo use DEBUG_ESP_x?
+    #ifdef WM_DEBUG_LEVEL
+    uint8_t _debugLevel = (uint8_t)WM_DEBUG_LEVEL;
+    #else 
+    uint8_t _debugLevel = DEBUG_DEV; // default debug level
+    #endif
+
+    // @todo use DEBUG_ESP_PORT ?
+    #ifdef WM_DEBUG_PORT
+    Stream& _debugPort = WM_DEBUG_PORT;
+    #else
+    Stream& _debugPort = Serial; // debug output stream ref
+    #endif
+
     template <typename Generic>
     void        DEBUG_WM(Generic text);
 
