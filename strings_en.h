@@ -22,7 +22,7 @@
 
 const char HTTP_HEAD_START[]       PROGMEM = "<!DOCTYPE html><html lang='en'><head><meta name='format-detection' content='telephone=no'><meta charset='UTF-8'><meta  name='viewport' content='width=device-width,initial-scale=1,user-scalable=no'/><title>{v}</title>";
 
-const char HTTP_CONF_SCRIPT[]      PROGMEM = "<script>function g(a){return document.getElementById(a)};let timerId=setTimeout(function run(){const a=new XMLHttpRequest();a.open('GET','/states');a.timeout=500;a.send();a.onreadystatechange=function(d){if(a.readyState===4&&a.status===200){var b=JSON.parse(a.responseText);Object.keys(b).forEach(function(e){g(e).innerHTML=b[e]})}};timerId=setTimeout(run,2000)},2000);function sTimer(b,d){var e=b;var a=setInterval(function(){d.textContent=e;if(--e<0){clearInterval(a);alert('Ватериус выключился. Начните настройку заново, зажав кнопку на 5–10 секунд.')}},1000)}window.onload=function(){var a=300;elem=document.querySelector('#timerId');sTimer(a,elem)};function showMe(){var a=g('chbox');var b='none';if(a.checked){b='block'}g('advanced').style.display=b};function c(a){g('s').value=a.value;g('p').focus()};</script>";
+const char HTTP_CONF_SCRIPT[]      PROGMEM = "<script>function g(a){return document.getElementById(a)};let timerId=setTimeout(function run(){const a=new XMLHttpRequest();a.open('GET','/states');a.timeout=500;a.send();a.onreadystatechange=function(d){if(a.readyState===4&&a.status===200){var b=JSON.parse(a.responseText);Object.keys(b).forEach(function(e){g(e).innerHTML=b[e]})}};timerId=setTimeout(run,2000)},2000);function sTimer(d){var a=setInterval(function(){if(parseInt(d.textContent)<3){clearInterval(a);alert('Ватериус выключился. Начните настройку заново, зажав кнопку на 5–10 секунд.')}},3000)} window.onload=function(){sTimer(g('elapsed'));};function showMe(){var a=g('chbox');var b='none';if(a.checked){b='block'} g('advanced').style.display=b};function c(a){g('s').value=a.value;g('p').focus()};</script>";
 
 const char HTTP_HEAD_END[]         PROGMEM = "</head><body><div class='wrap'>";
 
@@ -49,11 +49,11 @@ const char HTTP_ITEM[]             PROGMEM = "<label class='radcnt'>{v}<input ty
 // const char HTTP_ITEM[]            PROGMEM = "<div><a href='#p' onclick='c(this)'>{v}</a> {R} {r}% {q} {e}</div>"; // test all tokens
 
 const char WIFI_PAGE_TEXT[]        PROGMEM = "<h1>Настройка</h1>"
-"<p class='counter'>Устройство отключится через: <a id='timerId'>300</a>секунд</p>"
+"<p class='counter'>Устройство отключится через: <a id='elapsed'>?</a> сек</p>"
 "<h3>Выберите свою Wi-Fi сеть</h3>";
 
 const char HTTP_FORM_START[]       PROGMEM = "<form method='POST' action='{v}'>";
-const char HTTP_FORM_WIFI[]        PROGMEM = "<label class='label' for='s'>Название сети</label><input class='it' id='s' name='s' maxlength='32' autocorrect='off' autocapitalize='none' placeholder='{v}'><br/><br/><label class='label' for='p'>пароль от Wi-Fi</label><input class='it' id='p' name='p' maxlength='64' type='password' placeholder=''>";
+const char HTTP_FORM_WIFI[]        PROGMEM = "<label class='label' for='s'>Название сети</label><input class='it' id='s' name='s' maxlength='32' autocorrect='off' autocapitalize='none' placeholder='{v}'><br/><br/><label class='label' for='p'>Пароль от Wi-Fi</label><input class='it' id='p' name='p' maxlength='64' type='password' placeholder=''>";
 const char HTTP_FORM_WIFI_END[]    PROGMEM = "";
 const char HTTP_FORM_STATIC_HEAD[] PROGMEM = "<br/><br/>";
 const char HTTP_FORM_END[]         PROGMEM = "<br/><br/><button type='submit' class='button'>Сохранить</button></form>";
