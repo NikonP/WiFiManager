@@ -974,13 +974,7 @@ void WiFiManager::handleWifi(boolean scan) {
   page = getHTTPConfigHead(FPSTR(S_titlewifi)); // @token titlewifi
   page += FPSTR(HTTP_DIV_LOGO);
   page += FPSTR(WIFI_PAGE_TEXT);
-  page += "<div id='networks'></div>";
   
-  /*if (scan) {
-    // DEBUG_WM(DEBUG_DEV,"refresh flag:",server->hasArg(F("refresh")));
-    WiFi_scanNetworks(server->hasArg(F("refresh")),false); //wifiscan, force if arg refresh
-    getScanItemOut(page);
-  }*/
   String pitem = "";
 
   pitem = FPSTR(HTTP_FORM_START);

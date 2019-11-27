@@ -22,7 +22,7 @@
 
 const char HTTP_HEAD_START[]       PROGMEM = "<!DOCTYPE html><html lang='en'><head><meta name='format-detection' content='telephone=no'><meta charset='UTF-8'><meta  name='viewport' content='width=device-width,initial-scale=1,user-scalable=no'/><title>{v}</title>";
 
-const char HTTP_CONF_SCRIPT[]      PROGMEM = "<script>function g(a){return document.getElementById(a)};function send(u,timeout,f){const a=new XMLHttpRequest();a.open('GET',u);a.timeout=timeout;a.onreadystatechange=function(d){if(a.readyState===4&&a.status===200){f(a.responseText);}};a.send();};window.onload=function(){var t=setInterval(function(){function ok(u){var b=JSON.parse(u);Object.keys(b).forEach(function(e){if(g(e)){g(e).innerHTML=b[e];};})};send('/states',500,ok);if(parseInt(g('elapsed').textContent)<4){clearInterval(t);alert('Ватериус выключился. Начните настройку заново, зажав кнопку на 5–10 секунд.');}},2000);g('networks').innerHTML='Загрузка...';var loadn=setInterval(function(){function ok(a){g(e).innerHTML=a;clearInterval(loadn);};send('/networks',7000,ok);},8000);};function showMe(){var a=g('chbox');var b='none';if(a.checked){b='block'} g('advanced').style.display=b;};function c(a){g('s').value=a.value;g('p').focus();};</script>";
+const char HTTP_CONF_SCRIPT[]      PROGMEM = "<script>function g(a){return document.getElementById(a)};function send(u,t,f){const a=new XMLHttpRequest();a.open('GET',u);a.timeout=t;a.onreadystatechange=function(d){if(a.readyState===4&&a.status===200){f(a.responseText);}};a.send();};window.onload=function(){function states(){function ok(d){var b=JSON.parse(d);Object.keys(b).forEach(function(e){if(g(e)){g(e).innerHTML=b[e];};})};send('/states',500,ok);if(parseInt(g('elapsed').textContent)<4){clearInterval(j);alert('Ватериус выключился. Начните настройку заново, зажав кнопку на 5–10 секунд.');}} states();var j=setInterval(states,2000);function ntw(){function ok2(a){var h='<h3>Выберите свою Wi-Fi сеть</h3>';g('networks').innerHTML=h.concat(a);clearInterval(loadn);};send('/networks',7000,ok2);} ntw();var loadn=setInterval(ntw,8000);};function advSett(){var a=g('chbox');var b='none';if(a.checked){b='block'} g('advanced').style.display=b;};function c(a){g('s').value=a.value;g('p').focus();};</script>";
 
 const char HTTP_HEAD_END[]         PROGMEM = "</head><body><div class='wrap'>";
 
@@ -50,10 +50,11 @@ const char HTTP_ITEM[]             PROGMEM = "<label class='radcnt'>{v}<input ty
 
 const char WIFI_PAGE_TEXT[]        PROGMEM = "<h1>Настройка</h1>"
 "<p class='counter'>Устройство отключится через: <a id='elapsed'>?</a> сек</p>"
-"<h3>Выберите свою Wi-Fi сеть</h3><p id='error'></p>";
+"<h3>Сканируем Wi-Fi сети...</h3></div><p id='error'></p>"
+"<div id='networks'></div>";
 
 const char HTTP_FORM_START[]       PROGMEM = "<form method='POST' action='{v}'>";
-const char HTTP_FORM_WIFI[]        PROGMEM = "<label class='label' for='s'>Название сети</label><input class='it' id='s' name='s' maxlength='32' autocorrect='off' autocapitalize='none' placeholder='{v}'><br/><br/><label class='label' for='p'>Пароль от Wi-Fi</label><input class='it' id='p' name='p' maxlength='64' type='password' placeholder='{pwd}'>";
+const char HTTP_FORM_WIFI[]        PROGMEM = "<label class='label' for='s'>Название сети</label><input class='it' id='s' name='s' maxlength='32' autocorrect='off' autocapitalize='none' placeholder='' value='{v}'><br/><br/><label class='label' for='p'>Пароль от Wi-Fi</label><input class='it' id='p' name='p' maxlength='64' type='password' placeholder='' value='{pwd}'>";
 const char HTTP_FORM_WIFI_END[]    PROGMEM = "";
 const char HTTP_FORM_STATIC_HEAD[] PROGMEM = "<br/><br/>";
 const char HTTP_FORM_END[]         PROGMEM = "<br/><br/><button type='submit' class='button'>Сохранить</button></form>";
