@@ -50,8 +50,8 @@ const char HTTP_ITEM[]             PROGMEM = "<label class='radcnt'>{v}<input ty
 
 const char WIFI_PAGE_TEXT[]        PROGMEM = "<h1>Настройка</h1>"
 "<p class='counter'>Устройство отключится через: <a id='elapsed'>?</a> сек</p>"
-"<h3>Сканируем Wi-Fi сети...</h3></div><p id='error'></p>"
-"<div id='networks'></div>";
+"<p id='error'></p>"
+"<div id='networks'><h3>Сканируем Wi-Fi сети...</h3></div>";
 
 const char HTTP_FORM_START[]       PROGMEM = "<form method='POST' action='{v}'>";
 const char HTTP_FORM_WIFI[]        PROGMEM = "<label class='label' for='s'>Название сети</label><input class='it' id='s' name='s' maxlength='32' autocorrect='off' autocapitalize='none' placeholder='' value='{v}'><br/><br/><label class='label' for='p'>Пароль от Wi-Fi</label><input class='it' id='p' name='p' maxlength='64' type='password' placeholder='' value='{pwd}'>";
