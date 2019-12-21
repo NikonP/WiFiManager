@@ -22,7 +22,7 @@
 
 const char HTTP_HEAD_START[]       PROGMEM = "<!DOCTYPE html><html lang='en'><head><meta name='format-detection' content='telephone=no'><meta charset='UTF-8'><meta  name='viewport' content='width=device-width,initial-scale=1,user-scalable=no'/><title>{v}</title>";
 
-const char HTTP_CONF_SCRIPT[]      PROGMEM = "<script>function g(a){return document.getElementById(a)};function send(u,t,f){const a=new XMLHttpRequest();a.open('GET',u);a.timeout=t;a.onreadystatechange=function(d){if(a.readyState===4&&a.status===200){f(a.responseText);}};a.send();};window.onload=function(){function states(){function ok(d){var b=JSON.parse(d);Object.keys(b).forEach(function(e){if(g(e)){g(e).innerHTML=b[e];};})};send('/states',500,ok);if(parseInt(g('elapsed').textContent)<4){clearInterval(j);alert('Ватериус выключился. Начните настройку заново, зажав кнопку на 5–10 секунд.');}} states();var j=setInterval(states,2000);function ntw(){function ok2(a){var h='<h3>Выберите свою Wi-Fi сеть</h3>';g('networks').innerHTML=h.concat(a);clearInterval(loadn);};send('/networks',7000,ok2);} ntw();var loadn=setInterval(ntw,8000);};function advSett(){var a=g('chbox');var b='none';if(a.checked){b='block'} g('advanced').style.display=b;};function c(a){g('s').value=a.value;g('p').focus();};</script>";
+const char HTTP_CONF_SCRIPT[]      PROGMEM = "<script>function g(a){return document.getElementById(a)};function send(u,t,f){const a=new XMLHttpRequest();a.open('GET',u);a.timeout=t;a.onreadystatechange=function(d){if(a.readyState===4&&a.status===200){f(a.responseText);}};a.send();};window.onload=function(){function states(){function ok(d){var b=JSON.parse(d);Object.keys(b).forEach(function(e){if(g(e)){g(e).innerHTML=b[e];};})};send('/states',500,ok);if(parseInt(g('elapsed').textContent)<4){clearInterval(j);alert('Ватериус выключился. Начните настройку заново, зажав кнопку на 5–10 секунд.');}} states();var j=setInterval(states,2000);function ntw(){function ok2(a){var h='<h3>Выберите свою Wi-Fi сеть</h3>';g('networks').innerHTML=h.concat(a);clearInterval(loadn);};send('/networks',7000,ok2);} ntw();var loadn=setInterval(ntw,8000);};function advSett(){var a=g('chbox');var b='none';if(a.checked){b='block'} g('advanced').style.display=b;};function c(a){g('s').value=a.innerText||a.textContent;g('p').focus();};</script>";
 
 const char HTTP_HEAD_END[]         PROGMEM = "</head><body><div class='wrap'>";
 
@@ -45,7 +45,7 @@ const char * const HTTP_PORTAL_MENU[] PROGMEM = {
 // const char HTTP_PORTAL_OPTIONS[]   PROGMEM = strcat(HTTP_PORTAL_MENU[0] , HTTP_PORTAL_MENU[3] , HTTP_PORTAL_MENU[7]);
 const char HTTP_PORTAL_OPTIONS[]   PROGMEM = "";
 const char HTTP_ITEM_QI[]          PROGMEM = "<div role='img' class='q q-{q} {i} {h}'></div>"; // rssi icons
-const char HTTP_ITEM[]             PROGMEM = "<label class='radcnt'>{v}<input type='radio' name='n' value='{v}' onclick='c(this)'><span class='rmrk'></span>{qi}</label>";
+const char HTTP_ITEM[]             PROGMEM = "<label class='radcnt' onclick='c(this)'>{v}<input type='radio' name='n'><span class='rmrk'></span>{qi}</label>";
 // const char HTTP_ITEM[]            PROGMEM = "<div><a href='#p' onclick='c(this)'>{v}</a> {R} {r}% {q} {e}</div>"; // test all tokens
 
 const char WIFI_PAGE_TEXT[]        PROGMEM = "<h1>Настройка</h1>"
