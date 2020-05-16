@@ -983,10 +983,13 @@ void WiFiManager::handleWifi(boolean scan) {
 
   pitem = FPSTR(HTTP_FORM_WIFI);
   pitem.replace(FPSTR(T_v), WiFi_SSID());
-  pitem.replace("{pwd}", WiFi_psk());
+  String psk = WiFi_psk();
+  if (psk.length())
+    psk = "**********";
+  pitem.replace("{pwd}", psk);
   page += pitem;
 
-  getStaticOut(page);
+  //getStaticOut(page); т.к. я сам рисую их
   page += FPSTR(HTTP_FORM_WIFI_END);
   if(_paramsInWifi && _paramsCount>0){
     page += FPSTR(HTTP_FORM_PARAM_HEAD);
@@ -1328,30 +1331,25 @@ void WiFiManager::handleWifiSave() {
 
   //SAVE/connect here
   _ssid = server->arg(F("s")).c_str();
+
   _pass = server->arg(F("p")).c_str();
+  if (_pass == "**********")
+    _pass = WiFi_psk();
 
   if(_paramsInWifi) doParamSave();
 
-  if (server->arg(FPSTR(S_ip)) != "") {
-    //_sta_static_ip.fromString(server->arg(FPSTR(S_ip));
-    String ip = server->arg(FPSTR(S_ip));
-    optionalIPFromString(&_sta_static_ip, ip.c_str());
-    DEBUG_WM(DEBUG_DEV,F("static ip:"),ip);
+  IPAddress ip;
+  if (ip.fromString(server->arg(FPSTR(S_ip)))) {
+    _sta_static_ip = ip;
   }
-  if (server->arg(FPSTR(S_gw)) != "") {
-    String gw = server->arg(FPSTR(S_gw));
-    optionalIPFromString(&_sta_static_gw, gw.c_str());
-    DEBUG_WM(DEBUG_DEV,F("static gateway:"),gw);
+  if (ip.fromString(server->arg(FPSTR(S_gw)))) {
+    _sta_static_gw = ip;
   }
-  if (server->arg(FPSTR(S_sn)) != "") {
-    String sn = server->arg(FPSTR(S_sn));
-    optionalIPFromString(&_sta_static_sn, sn.c_str());
-    DEBUG_WM(DEBUG_DEV,F("static netmask:"),sn);
+  if (ip.fromString(server->arg(FPSTR(S_sn)))) {
+    _sta_static_sn = ip;
   }
-  if (server->arg(FPSTR(S_dns)) != "") {
-    String dns = server->arg(FPSTR(S_dns));
-    optionalIPFromString(&_sta_static_dns, dns.c_str());
-    DEBUG_WM(DEBUG_DEV,F("static DNS:"),dns);
+  if (ip.fromString(server->arg(FPSTR(S_dns)))) {
+    _sta_static_dns = ip;
   }
 
   String page = getHTTPEndHead(FPSTR(S_titlewifisaved)); // @token titlewifisaved
