@@ -113,6 +113,7 @@ class WiFiManagerParameter {
     WiFiManagerParameter(const char *id, const char *label, const char *defaultValue, int length);
     WiFiManagerParameter(const char *id, const char *label, const char *defaultValue, int length, const char *custom);
     WiFiManagerParameter(const char *id, const char *label, const char *defaultValue, int length, const char *custom, int labelPlacement);
+    WiFiManagerParameter(const char *id, const char *custom, bool iscustom, const char* defaultValue, int length);
     ~WiFiManagerParameter();
 
     const char *getID();
@@ -122,6 +123,7 @@ class WiFiManagerParameter {
     int         getValueLength();
     int         getLabelPlacement();
     const char *getCustomHTML();
+    bool        getIsSelectType();
     void        setValue(const char *defaultValue, int length);
 
   protected:
@@ -134,6 +136,7 @@ class WiFiManagerParameter {
     int         _length;
     int         _labelPlacement;
     const char *_customHTML;
+    bool        _isSelectType;
 
     friend class WiFiManager;
 };
