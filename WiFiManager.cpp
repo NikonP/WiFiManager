@@ -82,6 +82,13 @@ WiFiManagerParameter::~WiFiManagerParameter() {
   _length=0; // setting length 0, ideally the entire parameter should be removed, or added to wifimanager scope so it follows
 }
 
+void WiFiManagerParameter::setCustomHtml(const char* custom){
+    if(!_id){
+    return;
+  }
+  _customHTML = custom;
+}
+
 // @note debug is not available in wmparameter class
 void WiFiManagerParameter::setValue(const char *defaultValue, int length) {
   if(!_id){

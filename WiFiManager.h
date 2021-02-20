@@ -125,7 +125,8 @@ class WiFiManagerParameter {
     const char *getCustomHTML();
     bool        getIsSelectType();
     void        setValue(const char *defaultValue, int length);
-
+    void        setCustomHtml(const char* custom);
+    
   protected:
     void init(const char *id, const char *label, const char *defaultValue, int length, const char *custom, int labelPlacement);
 
