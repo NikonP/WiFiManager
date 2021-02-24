@@ -1000,7 +1000,7 @@ void WiFiManager::handleRoot() {
 void WiFiManager::handleWifi(boolean scan) {
   DEBUG_WM(DEBUG_VERBOSE,F("<- HTTP Wifi"));
   handleRequest();
-  String page; page.reserve(12000);
+  String page; page.reserve(13000);
   page = getHTTPConfigHead(FPSTR(S_titlewifi)); // @token titlewifi
   page += FPSTR(HTTP_DIV_LOGO);
   page += FPSTR(WIFI_PAGE_TEXT);
