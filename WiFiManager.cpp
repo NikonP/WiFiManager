@@ -1000,7 +1000,9 @@ void WiFiManager::handleRoot() {
 void WiFiManager::handleWifi(boolean scan) {
   DEBUG_WM(DEBUG_VERBOSE,F("<- HTTP Wifi"));
   handleRequest();
-  String page; page.reserve(13000);
+  String page; 
+  page.reserve(WIFI_PAGE_SIZE);
+
   page = getHTTPConfigHead(FPSTR(S_titlewifi)); // @token titlewifi
   page += FPSTR(HTTP_DIV_LOGO);
   page += FPSTR(WIFI_PAGE_TEXT);
@@ -1027,11 +1029,16 @@ void WiFiManager::handleWifi(boolean scan) {
     getParamOut(page);
   } else {
   }
-  DEBUG_WM(DEBUG_DEV,F("Page len="), page.length());
   page += FPSTR(HTTP_FORM_END);
   //page += FPSTR(HTTP_SCAN_LINK);
   //reportStatus(page);
   page += FPSTR(HTTP_END);
+
+  DEBUG_WM(DEBUG_DEV,F("Page len="), page.length());
+
+  if (page.length() >= WIFI_PAGE_SIZE) {
+    DEBUG_WM(DEBUG_NOTIFY,F("Wifi page length is more than WIFI_PAGE_SIZE, please increase constant cause fragmentation. Also refresh page (length changed): "), page.length());
+  }
 
   server->send(200, FPSTR(HTTP_HEAD_CT), page);
   // server->close(); // testing reliability fix for content length mismatches during mutiple flood hits
