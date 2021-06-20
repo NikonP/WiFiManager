@@ -94,10 +94,12 @@
 #include "strings_en.h"
 
 #ifndef WIFI_MANAGER_MAX_PARAMS
-    #define WIFI_MANAGER_MAX_PARAMS 35 // params will autoincrement and realloc by this amount when max is reached
+    //10.0.4 - 42
+    #define WIFI_MANAGER_MAX_PARAMS 45 // params will autoincrement and realloc by this amount when max is reached
 #endif
 
-#define WIFI_PAGE_SIZE 13500
+#define WIFI_PAGE_SIZE 14000
+    
 
 #define WFM_LABEL_BEFORE 1
 #define WFM_LABEL_AFTER 2
