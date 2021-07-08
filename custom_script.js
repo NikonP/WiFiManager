@@ -77,9 +77,9 @@ window.onload = function () {
 //     }
 //     g('advanced').style.display = b;
 // }
-// ;
-// function c(a) {
-//     g('s').value = a.innerText || a.textContent;
-//     g('p').focus();
-// }
+;
+function c(a) {
+    g('s').value = a.innerText || a.textContent;
+    g('p').focus();
+}
 // ;
