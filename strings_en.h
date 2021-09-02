@@ -52,7 +52,7 @@ const char HTTP_ITEM[] PROGMEM = "<label class='radcnt' onclick='c(this)'>{v}<in
 const char WIFI_PAGE_TEXT[] PROGMEM = "<h1>Настройка</h1>"
                                       "<p class='counter'>Устройство отключится через: <a id='elapsed'>?</a> сек</p>"
                                       "<p id='error'></p>"
-                                      "<h2 id='device_id'>ID устройства: ???</h2>"
+                                      "<h2 id='device_id'>ID устройства: <span id='device_id'>???</span></h2>"
                                       "<div id='networks'><h3>Сканируем Wi-Fi сети...</h3></div>";
 
 const char HTTP_FORM_START[] PROGMEM = "<form method='POST' action='{v}'>";
