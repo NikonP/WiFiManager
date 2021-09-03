@@ -91,7 +91,6 @@ extern "C"
 #include <DNSServer.h>
 #include <memory>
 #include "strings_en.h"
-#include "js_qrcode.h"
 
 #ifndef WIFI_MANAGER_MAX_PARAMS
 //10.0.4 - 42

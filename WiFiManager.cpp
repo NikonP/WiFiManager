@@ -1102,7 +1102,6 @@ String WiFiManager::getHTTPConfigHead(String title)
   page += FPSTR(HTTP_HEAD_START);
   page.replace(FPSTR(T_v), title);
   page += FPSTR(HTTP_CONF_SCRIPT);
-  page += FPSTR(JS_QRCODE_MIN);
   page += FPSTR(HTTP_CONF_STYLE);
   page += FPSTR(HTTP_HEAD_END);
   return page;
